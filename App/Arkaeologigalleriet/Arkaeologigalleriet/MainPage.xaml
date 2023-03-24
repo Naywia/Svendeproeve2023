@@ -3,36 +3,47 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Arkaeologigalleriet.MainPage">
 
-    <ScrollView>
+    <ScrollView>        
         <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
+            BackgroundColor="Brown">
 
             <Image
-                Source="dotnet_bot.png"
+                Source="arkologigalleriet_sort.png"
                 SemanticProperties.Description="Cute dot net bot waving hi to you!"
                 HeightRequest="200"
-                HorizontalOptions="Center" />
+                HorizontalOptions="StartAndExpand" />
 
-            <Label
-                Text="Hello, World!"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
+            <Grid VerticalOptions="CenterAndExpand" Padding="25">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Text="Brugernavn" VerticalOptions="Center"></Label>
+                <Border Grid.Row="1"
+                        StrokeShape="RoundRectangle 2,2,2,2">
+                    <Entry></Entry>
+                </Border>
+                
+                
+                <Label Grid.Row="2" Text="Password"></Label>
+                <Border 
+                    Grid.Row="3"
+                    StrokeShape="RoundRectangle 2,2,2,2"
+                    BackgroundColor="Transparent"
+                    StrokeThickness="5">
 
-            <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
+                    <Entry IsPassword="True"></Entry>
+                </Border>
+            </Grid>
 
             <Button
                 x:Name="CounterBtn"
                 Text="Click me"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
+                VerticalOptions="EndAndExpand"
                 HorizontalOptions="Center" />
 
         </VerticalStackLayout>
