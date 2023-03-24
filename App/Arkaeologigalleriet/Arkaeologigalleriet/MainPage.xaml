@@ -5,7 +5,7 @@
 
     <ScrollView>        
         <VerticalStackLayout
-            BackgroundColor="Brown">
+            Spacing="25">
 
             <Image
                 Source="arkologigalleriet_sort.png"
@@ -22,7 +22,9 @@
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Text="Brugernavn" VerticalOptions="Center"></Label>
                 <Border Grid.Row="1"
-                        StrokeShape="RoundRectangle 2,2,2,2">
+                        StrokeShape="RoundRectangle 2,2,2,2"
+                        BackgroundColor="Transparent"
+                        StrokeThickness="1">
                     <Entry></Entry>
                 </Border>
                 
@@ -32,15 +34,23 @@
                     Grid.Row="3"
                     StrokeShape="RoundRectangle 2,2,2,2"
                     BackgroundColor="Transparent"
-                    StrokeThickness="5">
+                    StrokeThickness="1">
 
                     <Entry IsPassword="True"></Entry>
                 </Border>
             </Grid>
 
             <Button
-                x:Name="CounterBtn"
-                Text="Click me"
+                x:Name="LoginBtn"
+                Text="Login"
+                SemanticProperties.Hint="Counts the number of times you click"
+                Clicked="OnCounterClicked"
+                VerticalOptions="EndAndExpand"
+                HorizontalOptions="Center" />
+
+            <Button
+                x:Name="GæstLoginBtn"
+                Text="Login som gæst"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
                 VerticalOptions="EndAndExpand"
