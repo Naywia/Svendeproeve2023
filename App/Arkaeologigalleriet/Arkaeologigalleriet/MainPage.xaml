@@ -44,7 +44,7 @@
                 x:Name="LoginBtn"
                 Text="Login"
                 SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
+                Clicked="LoginClicked"
                 VerticalOptions="EndAndExpand"
                 HorizontalOptions="Center" />
 
@@ -52,7 +52,7 @@
                 x:Name="GæstLoginBtn"
                 Text="Login som gæst"
                 SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
+                Clicked="GuestLoginClicked"
                 VerticalOptions="EndAndExpand"
                 HorizontalOptions="Center" />
 

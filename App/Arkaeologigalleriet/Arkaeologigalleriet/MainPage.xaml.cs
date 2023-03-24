@@ -1,17 +1,27 @@
-﻿namespace Arkaeologigalleriet;
+﻿using Arkaeologigalleriet.Views;
+
+namespace Arkaeologigalleriet;
 
 public partial class MainPage : ContentPage
 {
-	int count = 0;
 
 	public MainPage()
 	{
 		InitializeComponent();
+        Shell.SetFlyoutBehavior(this, FlyoutBehavior.Locked);
 	}
 
-	private void OnCounterClicked(object sender, EventArgs e)
-	{
-		
-	}
+    private async void LoginClicked(object sender, EventArgs e)
+    {
+        var Empview = new NavigationPage(new EmployeeView());
+        await Navigation.PushAsync(Empview, true);
+    }
+
+    private void GuestLoginClicked(object sender, EventArgs e)
+    {
+
+    }
+
+    
 }
 

@@ -52,11 +52,20 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\abstract_user_flat_4.svg" />
 	  <None Remove="Resources\Images\arkologigalleriet_sort.png" />
+	  <None Remove="Resources\Images\search.png" />
+	  <None Remove="Resources\Images\thenounproject.png" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Views\EmployeeView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
