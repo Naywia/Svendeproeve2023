@@ -24,6 +24,7 @@ class Archaeologygallery:
     # Get access token.
     @api.post("/Login", summary="Login")
     async def login(form_data: OAuth2PasswordRequestForm = Depends()):
+        """ Login endpoint. """
         # Expire JWT after 15 minutes.
         ACCESS_TOKEN_EXPIRE_MINUTES = 15
 
@@ -43,13 +44,25 @@ class Archaeologygallery:
         return JSONResponse(content=content, headers=headers)
     
     # READ
-    
-    #token: Token = Depends(Authorize().validateJWT)
-
     # test
     @api.get("/Test", summary="Test the api connection.")
     def test():
         return {"Hello": "World!"}
+
+    # Get all or one artefact
+    @api.get("/Artefact", summary="Get all or one artefact")
+    def artefact(artefactID: int = None, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for getting all artefacts or one specif artefact. """
+        # If the artefactID isn't none.
+        if artefactID:
+            title = "Artefact"
+            result
+
+        else:
+            title = "Artefacts"
+            result
+    
+        return {title: result}
 
     # UPDATE
 
