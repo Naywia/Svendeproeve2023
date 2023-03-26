@@ -1,20 +1,21 @@
-﻿using Arkaeologigalleriet.Views;
+﻿using Arkaeologigalleriet.ViewModels;
+using Arkaeologigalleriet.Views;
 
 namespace Arkaeologigalleriet;
 
 public partial class MainPage : ContentPage
 {
 
-	public MainPage()
+	public MainPage(MainPageViewModel vm)
 	{
 		InitializeComponent();
+        BindingContext = vm;
         Shell.SetFlyoutBehavior(this, FlyoutBehavior.Locked);
 	}
 
     private async void LoginClicked(object sender, EventArgs e)
-    {
-        var Empview = new NavigationPage(new EmployeeView());
-        await Navigation.PushAsync(Empview, true);
+    {    
+        await Shell.Current.GoToAsync(nameof(EmployeeView));
     }
 
     private void GuestLoginClicked(object sender, EventArgs e)
@@ -22,6 +23,7 @@ public partial class MainPage : ContentPage
 
     }
 
+    
     
 }
 

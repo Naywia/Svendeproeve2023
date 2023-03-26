@@ -7,7 +7,7 @@
     xmlns:views="clr-namespace:Arkaeologigalleriet.Views"
     Shell.FlyoutBehavior="Flyout">
 
-    
+
     <ShellContent
         Title="Peter Pedal"
         Icon="abstract_user_flat_4.svg"
@@ -26,7 +26,12 @@
         Title="Scan QR"
         ContentTemplate="{DataTemplate views:EmployeeView}"
         Route="EmployeeView"
-        Icon="thenounproject.png"        
+        Icon="thenounproject.png"
         />
 
+
+    <Shell.FlyoutFooter>
+        <Label Text="Log ud"/>
+        
+    </Shell.FlyoutFooter>
 </Shell>

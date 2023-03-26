@@ -1,10 +1,18 @@
+using Arkaeologigalleriet.ViewModels;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
 namespace Arkaeologigalleriet.Views;
 
 public partial class EmployeeView : ContentPage
 {
-	public EmployeeView()
+	public EmployeeView(EmployeeViewModel vm)
 	{
 		InitializeComponent();
-		Shell.SetFlyoutBehavior(this, FlyoutBehavior.Locked);
+		BindingContext= vm;
+		Shell.SetFlyoutBehavior(this, FlyoutBehavior.Flyout);
+		Shell.Current.FlyoutIsPresented = true;
+
+		
 	}
 }

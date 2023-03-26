@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Arkaeologigalleriet.ViewModels;
+using Arkaeologigalleriet.Views;
+using Microsoft.Extensions.Logging;
 
 namespace Arkaeologigalleriet;
 
@@ -15,8 +17,15 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
+		builder.Services.AddSingleton<MainPage>();
+		builder.Services.AddSingleton<MainPageViewModel>();
+
+        builder.Services.AddTransient<EmployeeView>();
+        builder.Services.AddTransient<EmployeeViewModel>();
+
+
 #if DEBUG
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
 
 		return builder.Build();
