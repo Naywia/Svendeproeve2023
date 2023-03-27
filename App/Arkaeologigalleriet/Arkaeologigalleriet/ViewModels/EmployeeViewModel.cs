@@ -8,7 +8,7 @@ namespace Arkaeologigalleriet.ViewModels
         [RelayCommand]
         async Task Logud()
         {
-            await Shell.Current.GoToAsync("../");
+            await Shell.Current.GoToAsync(nameof(MainPage));
         }
     }
 }

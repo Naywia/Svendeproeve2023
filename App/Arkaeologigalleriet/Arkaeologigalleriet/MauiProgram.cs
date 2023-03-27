@@ -23,6 +23,9 @@ public static class MauiProgram
         builder.Services.AddTransient<EmployeeView>();
         builder.Services.AddTransient<EmployeeViewModel>();
 
+        builder.Services.AddTransient<SearchView>();
+        builder.Services.AddTransient<SearchViewModel>();
+
 
 #if DEBUG
         builder.Logging.AddDebug();

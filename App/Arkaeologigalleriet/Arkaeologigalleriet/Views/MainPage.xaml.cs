@@ -10,7 +10,7 @@ public partial class MainPage : ContentPage
 	{
 		InitializeComponent();
         BindingContext = vm;
-        Shell.SetFlyoutBehavior(this, FlyoutBehavior.Locked);
+        Shell.SetFlyoutBehavior(this, FlyoutBehavior.Disabled);
 	}
 
     private async void LoginClicked(object sender, EventArgs e)
