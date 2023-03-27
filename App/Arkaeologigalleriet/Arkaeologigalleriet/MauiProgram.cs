@@ -32,6 +32,12 @@ public static class MauiProgram
         builder.Services.AddTransient<ChangePasswordView>();
         builder.Services.AddTransient<ChangePasswordViewModel>();
 
+        builder.Services.AddTransient<ArtifactInformationView>();
+        builder.Services.AddTransient<ArtifactInformationViewModel>();
+
+        builder.Services.AddTransient<UpdateStatusView>();
+        builder.Services.AddTransient<UpdateStatusViewModel>();
+
 
 #if DEBUG
         builder.Logging.AddDebug();

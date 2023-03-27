@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Arkaeologigalleriet.Views.UpdateStatusView"
+             Title="Ændre status">
+    <VerticalStackLayout Spacing="20" VerticalOptions="Center">
+        <Border WidthRequest="350"
+                    StrokeShape="RoundRectangle 2,2,2,2"
+                    BackgroundColor="Transparent"
+                    StrokeThickness="1">
+            <Picker Title="Ændre status" HorizontalTextAlignment="Center" x:Name="picker">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Lager A</x:String>
+                        <x:String>Display</x:String>
+                        <x:String>Restauration</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+        </Border>
+
+        <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="0,30,0,0">
+            <Button Text="Gem" WidthRequest="150"/>
+            <Button Text="Annuller" WidthRequest="150"/>
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>
