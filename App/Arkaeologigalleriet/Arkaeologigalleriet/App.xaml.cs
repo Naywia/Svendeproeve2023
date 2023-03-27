@@ -9,6 +9,6 @@ public partial class App : Application
 		InitializeComponent();
 
 		//MainPage = new AppShell();
-		MainPage = new EmployeeView(null);
+		MainPage = new ChangePasswordView(null);
 	}
 }

@@ -29,6 +29,9 @@ public static class MauiProgram
         builder.Services.AddTransient<ScanQRView>();
         builder.Services.AddTransient<ScanQRViewModel>();
 
+        builder.Services.AddTransient<ChangePasswordView>();
+        builder.Services.AddTransient<ChangePasswordViewModel>();
+
 
 #if DEBUG
         builder.Logging.AddDebug();

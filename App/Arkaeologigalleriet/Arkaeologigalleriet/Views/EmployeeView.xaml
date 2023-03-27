@@ -5,6 +5,7 @@
              Title="Profil"
              xmlns:viemodel="clr-namespace:Arkaeologigalleriet.ViewModels"
              x:DataType="viemodel:EmployeeViewModel">
+    
     <VerticalStackLayout Spacing="10">
         <Entry Text="Peter Pedal"
                IsReadOnly="True"
