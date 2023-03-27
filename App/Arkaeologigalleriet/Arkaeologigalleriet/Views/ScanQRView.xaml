@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Arkaeologigalleriet.Views.ScanQRView"
+             Title="Scan QR">
+    <VerticalStackLayout VerticalOptions="Center">
+        <BoxView Color="CornflowerBlue"
+                 CornerRadius="10"
+                 WidthRequest="350"
+                 HeightRequest="350"
+                 VerticalOptions="Center"
+                 HorizontalOptions="Center" 
+                 Margin="10"/>
+
+        <Button Text="Scan" Margin="10" WidthRequest="250"/>
+        <Button Text="Annuller" Margin="10" WidthRequest="250"/>
+    </VerticalStackLayout>
+</ContentPage>

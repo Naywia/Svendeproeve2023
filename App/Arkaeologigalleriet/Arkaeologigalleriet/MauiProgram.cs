@@ -26,6 +26,9 @@ public static class MauiProgram
         builder.Services.AddTransient<SearchView>();
         builder.Services.AddTransient<SearchViewModel>();
 
+        builder.Services.AddTransient<ScanQRView>();
+        builder.Services.AddTransient<ScanQRViewModel>();
+
 
 #if DEBUG
         builder.Logging.AddDebug();

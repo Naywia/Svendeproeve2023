@@ -9,6 +9,6 @@ public partial class App : Application
 		InitializeComponent();
 
 		//MainPage = new AppShell();
-		MainPage = new SearchView(null);
+		MainPage = new ScanQRView(null);
 	}
 }
