@@ -12,7 +12,7 @@ from connection import Connection as Conn
 
 class Authorize:
     # Scheme that method validateJWT depends on.
-    oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/Login", scheme_name="JWT")
+    oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login", scheme_name="JWT")
 
     # Initial method, set variables.
     def __init__(self):
@@ -41,7 +41,7 @@ class Authorize:
         return False
 
     # Create the JWT.
-    def createAccessToken(self, data: dict, expires_delta: timedelta | None = None):
+    def createAccessToken(self, data: dict, expires_delta: timedelta = None):
         # Create copy of data dict.
         to_encode = data.copy()
         # if expires_delta is not none..
