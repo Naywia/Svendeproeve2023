@@ -5,7 +5,6 @@ import uvicorn
 from fastapi import Depends, FastAPI, HTTPException, Response, status
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
-from pydantic import BaseModel
 
 # Own files.
 from connection import Connection as Conn
@@ -15,6 +14,7 @@ from authorize import Authorize
 # Response body
 class Token(BaseModel):
     accessToken: str
+from basemodels import *
 
 # API
 class Archaeologygallery:
