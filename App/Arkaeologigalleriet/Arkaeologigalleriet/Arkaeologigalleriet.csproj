@@ -57,11 +57,13 @@
 	  <None Remove="Resources\Images\icons8_home_32.png" />
 	  <None Remove="Resources\Images\icons8_password_reset_50.png" />
 	  <None Remove="Resources\Images\icons8_phone_48.png" />
+	  <None Remove="Resources\Images\out.png" />
 	  <None Remove="Resources\Images\search.png" />
 	  <None Remove="Resources\Images\thenounproject.png" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Maui" Version="5.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 	</ItemGroup>
@@ -74,6 +76,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\EmployeeView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\LoginPopupView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ScanQRView.xaml">

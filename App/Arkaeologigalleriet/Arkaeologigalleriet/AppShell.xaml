@@ -9,26 +9,21 @@
 
 
     <ShellContent
-        Title="Peter Pedal"
-        Icon="abstract_user_flat_4.svg"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage"
-        />
-
-    <ShellContent
         Title="Søg"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage"
+        ContentTemplate="{DataTemplate views:SearchView}"
+        Route="SearchView"
         Icon="search.png"
         />
 
     <ShellContent
         Title="Scan QR"
-        ContentTemplate="{DataTemplate views:EmployeeView}"
-        Route="EmployeeView"
+        ContentTemplate="{DataTemplate views:ScanQRView}"
+        Route="ScanQRView"
         Icon="thenounproject.png"
         />
-
+    <MenuItem
+    Text="Log ud"
+    IconImageSource="out.png"/>
 
     <Shell.FlyoutFooter>
         <Label Text="Log ud"/>

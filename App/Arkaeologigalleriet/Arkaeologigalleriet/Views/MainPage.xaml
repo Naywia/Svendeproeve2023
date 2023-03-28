@@ -6,59 +6,8 @@
              x:DataType="viewmodel:MainPageViewModel">
 
     <ScrollView>        
-        <VerticalStackLayout
-            Spacing="25">
+        
 
-            <Image
-                Source="arkologigalleriet_sort.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
-                HorizontalOptions="StartAndExpand" />
-
-            <Grid VerticalOptions="CenterAndExpand" Padding="25">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-                <Label Grid.Row="0" Text="Brugernavn" VerticalOptions="Center"></Label>
-                <Border Grid.Row="1"
-                        StrokeShape="RoundRectangle 2,2,2,2"
-                        BackgroundColor="Transparent"
-                        StrokeThickness="1">
-                    <Entry></Entry>
-                </Border>
-                
-                
-                <Label Grid.Row="2" Text="Password"></Label>
-                <Border 
-                    Grid.Row="3"
-                    StrokeShape="RoundRectangle 2,2,2,2"
-                    BackgroundColor="Transparent"
-                    StrokeThickness="1">
-
-                    <Entry IsPassword="True"></Entry>
-                </Border>
-            </Grid>
-
-            <Button
-                x:Name="LoginBtn"
-                Text="Login"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="LoginClicked"
-                VerticalOptions="EndAndExpand"
-                HorizontalOptions="Center" />
-
-            <Button
-                x:Name="GæstLoginBtn"
-                Text="Login som gæst"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="GuestLoginClicked"
-                VerticalOptions="EndAndExpand"
-                HorizontalOptions="Center" />
-
-        </VerticalStackLayout>
     </ScrollView>
 
 </ContentPage>

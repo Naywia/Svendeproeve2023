@@ -8,7 +8,11 @@ public partial class App : Application
 	{
 		InitializeComponent();
 
-		//MainPage = new AppShell();
-		MainPage = new UpdateStatusView(null);
+		MainPage = new AppShell();
 	}
+
+    protected override void OnStart()
+    {
+        Current.MainPage.Navigation.PushModalAsync(new LoginPopupView());
+    }
 }
