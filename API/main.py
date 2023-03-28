@@ -22,7 +22,7 @@ class Archaeologygallery:
     api = FastAPI() 
 
     # Get access token.
-    @api.post("/Login", summary="Login")
+    @api.post("/login", summary="Login")
     async def login(form_data: OAuth2PasswordRequestForm = Depends()):
         """ Login endpoint. """
         # Expire JWT after 15 minutes.
@@ -44,15 +44,6 @@ class Archaeologygallery:
         return JSONResponse(content=content, headers=headers)
     
     # READ
-    # test
-    @api.get("/Test", summary="Test the api connection.")
-    def test():
-        return {"Hello": "World!"}
-
-    # Get all or one artefact
-    @api.get("/Artefact", summary="Get all or one artefact")
-    def artefact(artefactID: int = None, token: Token = Depends(Authorize().validateJWT)):
-        """ Endpont for getting all artefacts or one specif artefact. """
         # If the artefactID isn't none.
         if artefactID:
             title = "Artefact"
