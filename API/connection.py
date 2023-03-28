@@ -163,6 +163,38 @@ class Connection:
         return self.execute(sql)
 
     # ---------------------------------- UPDATE ---------------------------------- #
-    
+    def updateStorage(self, storageID, storageName):
+        """ Update storage. """
+        sql = f"""UPDATE "Storage"
+                SET "storageName" = '{storageName}'
+                WHERE "storageID" = {storageID};"""
+        self.execute(sql, commit=True)
+        return "Storage has been updated"
+
+    def UpdatePlacement(self, placementID, columsToUpdate: list, values: list):
+        """ Update storage. """
+
+        if (len(columsToUpdate) == len(values)) and len(values) != 0:
+            sql = f"""UPDATE "StoragePlacement" SET """
+            i = 0
+            while i < len(columsToUpdate):
+                if columsToUpdate[i] != "storageID":
+                    values[i] = "'" + values[i] + "'"
+                if i == len(columsToUpdate) - 1:
+                    sql += f"{columsToUpdate[i]} = {values[i]} "
+                else:
+                    sql += f"{columsToUpdate[i]} = {values[i]}, "
+                i += 1
+            sql += f""""WHERE "placementID" = {bookID}"""
+            self.execute(sql, commit=True)
+            return "Placement has been updated"
+        return "Something went wrong"
+
+        sql = f"""UPDATE table_name
+                SET column1 = value1,
+                column2 = value2
+                WHERE condition;"""
+        return self.execute(sql)
+
     # ---------------------------------- DELETE ---------------------------------- #
     

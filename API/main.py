@@ -206,30 +206,26 @@ class Archaeologygallery:
         Conn().updateStorage(storageID, storage.storageName)
         return {'message': 'Storage has been updated'}
 
-    @api.get("/placement", summary="Update storage placement")
+    @api.patch("/placement", summary="Update storage placement")
     def getPlacement(placementID: int, placement: UpdateStoragePlacement, token: Token = Depends(Authorize().validateJWT)):
-        """ Endpont for getting all placements or one specific placement. """
-        # If the placementID isn't none.
-        result = []
-        if placementID:
-            title = "Placement"
-            placements = Conn().getPlacementInfo(placementID)
-        else:
-            title = "Placements"
-            placements = Conn().getPlacements()
-        i = 0
-        while i < len(placements):
-            temp = {}
-            temp['ID'] = placements[i][0]
-            temp['Storage'] = placements[i][1]
-            temp['Shelf'] = placements[i][2]
-            if placements[i][3]:
-                temp['Row'] = placements[i][3]
+        """ Endpont for updating a placement. """
+        columsToUpdate = []
+        values = []
+        # If values isn't none add them to list.
+        if placement.shelf:
+            columsToUpdate.append("shelf")
+            values.append(placement.shelf)
+        if placement.row:
+            columsToUpdate.append("row")
+            values.append(placement.row)
+        if placement.storageID:
+            columsToUpdate.append("storageID")
+            values.append(placement.storageID)
 
-            result.append(temp)
-            i += 1
-
-        return {title: result}
+        result = Conn().updatePlacement(bookID, columsToUpdate, values)
+        if result == "Something went wrong":
+            response.status_code = status.HTTP_400_BAD_REQUEST
+        return {"message": result}
 
     # Get all or one artefact type.
     @api.get("/artefactType", summary="Get all or one artefact type")
