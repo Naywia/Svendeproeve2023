@@ -9,11 +9,6 @@ from fastapi.security import OAuth2PasswordRequestForm
 # Own files.
 from connection import Connection as Conn
 from authorize import Authorize
-
-# BASEMODELS
-# Response body
-class Token(BaseModel):
-    accessToken: str
 from basemodels import *
 
 # API
