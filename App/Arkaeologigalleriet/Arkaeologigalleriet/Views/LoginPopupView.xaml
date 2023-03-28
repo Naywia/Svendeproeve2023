@@ -26,7 +26,7 @@
                         StrokeShape="RoundRectangle 2,2,2,2"
                         BackgroundColor="Transparent"
                         StrokeThickness="1">
-                    <Entry></Entry>
+                    <Entry x:Name="UsernameEntry"></Entry>
                 </Border>
 
 
@@ -37,7 +37,7 @@
                     BackgroundColor="Transparent"
                     StrokeThickness="1">
 
-                    <Entry IsPassword="True"></Entry>
+                    <Entry IsPassword="True" x:Name="PasswordEntry"></Entry>
                 </Border>
             </Grid>
 

@@ -12,4 +12,9 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute(nameof(SearchView), typeof(SearchView));
 		Routing.RegisterRoute(nameof(ScanQRView), typeof(ScanQRView));
 	}
+
+    private async void LogOutBtn(object sender, EventArgs e)
+    {
+        await Application.Current.MainPage.Navigation.PushModalAsync(new LoginPopupView());
+    }
 }

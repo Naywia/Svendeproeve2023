@@ -1,12 +1,16 @@
+using Arkaeologigalleriet.ViewModels;
 using CommunityToolkit.Maui.Views;
 
 namespace Arkaeologigalleriet.Views;
 
 public partial class LoginPopupView : ContentPage
 {
-	public LoginPopupView()
+    LoginViewModel _vm;
+
+    public LoginPopupView()
 	{
 		InitializeComponent();
+        _vm = new LoginViewModel();
 	}
 
     protected override bool OnBackButtonPressed()
@@ -16,6 +20,14 @@ public partial class LoginPopupView : ContentPage
 
     private async void EmpLoginBtn(object sender, EventArgs e) 
     {
-        await Application.Current.MainPage.Navigation.PopModalAsync();
+        var loginresponce = await _vm.Login(UsernameEntry.Text, PasswordEntry.Text);
+        if (loginresponce != null)
+        {
+            await Application.Current.MainPage.Navigation.PopModalAsync();
+        }
+        else
+        {
+            await DisplayAlert("Fejl", "Fejl i bruger navn eller kode. Prøv igen", "Ok");
+        }
     }
 }

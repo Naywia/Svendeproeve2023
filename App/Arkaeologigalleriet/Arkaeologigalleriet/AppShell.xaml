@@ -21,12 +21,18 @@
         Route="ScanQRView"
         Icon="thenounproject.png"
         />
-    <MenuItem
-    Text="Log ud"
-    IconImageSource="out.png"/>
+    
 
-    <Shell.FlyoutFooter>
-        <Label Text="Log ud"/>
+    <Shell.FlyoutFooterTemplate>
+        <DataTemplate>
+            <HorizontalStackLayout Spacing="10" Padding="15">
+                <ImageButton Source="out.png" HeightRequest="25" WidthRequest="30" Clicked="LogOutBtn">
+
+                </ImageButton>
+                <Label Text="Log ud" VerticalTextAlignment="Center"/>
+            </HorizontalStackLayout>
+        </DataTemplate>
         
-    </Shell.FlyoutFooter>
+        
+    </Shell.FlyoutFooterTemplate>
 </Shell>

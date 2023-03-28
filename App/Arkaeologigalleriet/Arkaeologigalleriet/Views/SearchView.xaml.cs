@@ -8,5 +8,7 @@ public partial class SearchView : ContentPage
 	{
 		InitializeComponent();
 		BindingContext = vm;
+		
+		
 	}
 }
