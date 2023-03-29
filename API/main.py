@@ -302,5 +302,24 @@ class Archaeologygallery:
 
     # -------------------------------------- DELETE -------------------------------------- #
     
+    @api.delete("/user", summary="Delete user")
+    def getUser(userID: int, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for deleting a user. """
+        
+    @api.delete("/storage", summary="Delete storage")
+    def getStorage(storageID: int, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for deleint a storage. """
+
+    @api.delete("/placement", summary="Delete placement")
+    def getPlacement(placementID: int, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for deleting placement. """
+        
+    @api.delete("/artefactType", summary="Delete artefact type")
+    def getArtefactType(artefactTypeID: int, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for deleting artefact type. """
+
+    @api.delete("/artefact", summary="Delete artefact")
+    def getArtefact(artefactID: int = None, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for deleting artefact. """
 
 uvicorn.run(Archaeologygallery().api, host='0.0.0.0', port=8000)
