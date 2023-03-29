@@ -19,6 +19,20 @@ class User(BaseModel):
     phoneNumber: int
     employeeTypeID: int
 
+class UpdateUser(BaseModel):
+    """ Request body when updating user. """
+    firstName: str = None
+    lastName: str = None
+    email: str = None
+    phoneNumber: int = None
+    employeeTypeID: int = None
+
+class UpdatePsw(BaseModel):
+    """ Request body when updating password. """
+    oldPassword: str
+    newPassword: str
+    repeatNewPassword: str
+
 class Storage(BaseModel):
     """ Request body when adding or updating a storage room. """
     storageName: str
@@ -45,3 +59,10 @@ class Artefact(BaseModel):
     artefactDescription: str
     artefactTypeID: int
     placementID: int
+
+class UpdateArtefact(BaseModel):
+    """ Request body when updating a artefact. """
+    artefact: str = None
+    artefactDescription: str = None
+    artefactTypeID: int = None
+    placementID: int = None

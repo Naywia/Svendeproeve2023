@@ -203,11 +203,50 @@ class Archaeologygallery:
         return {title: result}
 
     # -------------------------------------- UPDATE -------------------------------------- #
+
+    @api.patch("/user", summary="Update user")
+    def updateUser(userID: int, user: UpdateUser, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for updating user infomation. """
+        columsToUpdate = []
+        values = []
+
+        # If values isn't none add them to list.
+        if user.firstName:
+            columsToUpdate.append("firstName")
+            values.append(user.firstName)
+        if user.lastName:
+            columsToUpdate.append("lastName")
+            values.append(user.lastName)
+        if user.email:
+            columsToUpdate.append("email")
+            values.append(user.email)
+        if user.phoneNumber:
+            columsToUpdate.append("phoneNumber")
+            values.append(user.phoneNumber)
+        if user.employeeTypeID:
+            columsToUpdate.append("employeeTypeID")
+            values.append(user.employeeTypeID)
+
+        result = Conn().updateUser(userID, columsToUpdate, values)
+        if result == "Something went wrong":
+            response.status_code = status.HTTP_400_BAD_REQUEST
+        return {"message": result}
+
+    @api.patch("/password", summary="Update user password")
+    def updatePassword(userID: int, psw: UpdatePsw, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for updating a users password. """
+        if psw.newPassword == psw.repeatNewPassword:
+            result = Conn().updatePassword(userID, psw.oldPassword, psw.newPassword)
+        else:
+            response.status_code = status.HTTP_400_BAD_REQUEST
+            result = "Passwords doesn't match."
+        return {'message': result}
+        
     @api.patch("/storage", summary="Update storage")
     def updateStorage(storageID: int, storage: Storage, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating a storage. """
-        Conn().updateStorage(storageID, storage.storageName)
-        return {'message': 'Storage has been updated'}
+        result = Conn().updateStorage(storageID, storage.storageName)
+        return {'message': result}
 
     @api.patch("/placement", summary="Update storage placement")
     def getPlacement(placementID: int, placement: UpdateStoragePlacement, token: Token = Depends(Authorize().validateJWT)):
@@ -225,62 +264,41 @@ class Archaeologygallery:
             columsToUpdate.append("storageID")
             values.append(placement.storageID)
 
-        result = Conn().updatePlacement(bookID, columsToUpdate, values)
+        result = Conn().updatePlacement(placementID, columsToUpdate, values)
         if result == "Something went wrong":
             response.status_code = status.HTTP_400_BAD_REQUEST
         return {"message": result}
 
-    # Get all or one artefact type.
-    @api.get("/artefactType", summary="Get all or one artefact type")
-    def getArtefactType(artefactTypeID: int = None, token: Token = Depends(Authorize().validateJWT)):
-        """ Endpont for getting all artefact types or one specific artefact type. """
-        # If the artefactTypeID isn't none.
-        result = []
-        if artefactTypeID:
-            title = "Artefact Type"
-            atypes = Conn().getArtefactTypeInfo(artefactTypeID)
-        else:
-            title = "Artefact Types"
-            atypes = Conn().getArtefactTypes()
-        i = 0
-        while i < len(atypes):
-            temp = {}
-            temp['ID'] = atypes[i][0]
-            temp['Type'] = atypes[i][1]
+    @api.patch("/artefactType", summary="Update an artefact type")
+    def getArtefactType(artefactTypeID: int, aType: ArtefactType, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for updating an artefact type. """
+        result = Conn().updateArtefactType(artefactTypeID, aType.artefactType)
+        return {'message': result}
 
-            result.append(temp)
-            i += 1
+    @api.patch("/artefact", summary="Update artefact")
+    def updateArtefact(artefactID: int, artefact: UpdateArtefact, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for updating an artefact. """
+        columsToUpdate = []
+        values = []
+    
+        # If values isn't none add them to list.
+        if artefact.artefact:
+            columsToUpdate.append("artefact")
+            values.append(artefact.artefact)
+        if artefact.artefactDescription:
+            columsToUpdate.append("artefactDescription")
+            values.append(artefact.artefactDescription)
+        if artefact.artefactTypeID:
+            columsToUpdate.append("artefactTypeID")
+            values.append(artefact.artefactTypeID)
+        if artefact.placementID:
+            columsToUpdate.append("placementID")
+            values.append(artefact.placementID)
 
-        return {title: result}
-
-    # Get all or one artefact.
-    @api.get("/artefact", summary="Get all or one artefact")
-    def getArtefact(artefactID: int = None, token: Token = Depends(Authorize().validateJWT)):
-        """ Endpont for getting all artefacts or one specific artefact. """
-        # If the artefactID isn't none.
-        result = []
-        if artefactID:
-            title = "Artefact"
-            artefacts = Conn().getArtefactInfo(artefactID)
-        else:
-            title = "Artefacts"
-            artefacts = Conn().getArtefacts()
-        i = 0
-        while i < len(artefacts):
-            temp = {}
-            temp['ID'] = artefacts[i][0]
-            temp['Name'] = artefacts[i][1]
-            temp['Description'] = artefacts[i][2]
-            temp['ArtefactType'] = artefacts[i][3]
-            temp['Storage'] = artefacts[i][4]
-            temp['Shelf'] = artefacts[i][5]
-            if artefacts[i][6]:
-                temp['Row'] = artefacts[i][6]
-
-            result.append(temp)
-            i += 1
-
-        return {title: result}
+        result = Conn().updateArtefact(artefactID, columsToUpdate, values)
+        if result == "Something went wrong":
+            response.status_code = status.HTTP_400_BAD_REQUEST
+        return {"message": result}
 
     # -------------------------------------- DELETE -------------------------------------- #
     

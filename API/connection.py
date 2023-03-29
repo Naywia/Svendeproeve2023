@@ -133,6 +133,35 @@ class Connection:
         return self.execute(sql)
 
     # ---------------------------------- UPDATE ---------------------------------- #
+    
+    def updateUser(self, employeeID, columsToUpdate: list, values: list):
+        """ Update user infomation. """
+
+        if (len(columsToUpdate) == len(values)) and len(values) != 0:
+            sql = f"""UPDATE "Employee" SET """
+            i = 0
+            while i < len(columsToUpdate):
+                if type(values[i]) != int:
+                    values[i] = "'" + values[i] + "'"
+                if i == len(columsToUpdate) - 1:
+                    sql += f"\"{columsToUpdate[i]}\" = {values[i]} "
+                else:
+                    sql += f"\"{columsToUpdate[i]}\" = {values[i]}, "
+                i += 1
+            sql += f"""WHERE "employeeID" = {employeeID}"""
+            self.execute(sql, commit=True)
+            return "User has been updated"
+        return "Something went wrong"
+        return self.execute(sql)
+
+    def updatePassword(self, employeeID, oldPassword, newPassword):
+        """ Update password. """
+        sql = f"""UPDATE "Employee"
+                SET "password" = '{newPassword}'
+                WHERE "employeeID" = {employeeID} AND "password" = '{oldPassword}';"""
+        self.execute(sql, commit=True)
+        return "Password has been updated"
+
     def updateStorage(self, storageID, storageName):
         """ Update storage. """
         sql = f"""UPDATE "Storage"
@@ -141,29 +170,52 @@ class Connection:
         self.execute(sql, commit=True)
         return "Storage has been updated"
 
-    def UpdatePlacement(self, placementID, columsToUpdate: list, values: list):
-        """ Update storage. """
+    def updatePlacement(self, placementID, columsToUpdate: list, values: list):
+        """ Update storage placement. """
 
         if (len(columsToUpdate) == len(values)) and len(values) != 0:
             sql = f"""UPDATE "StoragePlacement" SET """
             i = 0
             while i < len(columsToUpdate):
-                if columsToUpdate[i] != "storageID":
+                if type(values[i]) != int:
                     values[i] = "'" + values[i] + "'"
                 if i == len(columsToUpdate) - 1:
-                    sql += f"{columsToUpdate[i]} = {values[i]} "
+                    sql += f"\"{columsToUpdate[i]}\" = {values[i]} "
                 else:
-                    sql += f"{columsToUpdate[i]} = {values[i]}, "
+                    sql += f"\"{columsToUpdate[i]}\" = {values[i]}, "
                 i += 1
-            sql += f""""WHERE "placementID" = {bookID}"""
+            sql += f"""WHERE "placementID" = {placementID}"""
             self.execute(sql, commit=True)
             return "Placement has been updated"
         return "Something went wrong"
+        return self.execute(sql)
+    
+    def updateArtefactType(self, artefactTypeID, artefactType):
+        """ Update artefact type. """
+        sql = f"""UPDATE "ArtefactType"
+                SET "artefactType" = '{artefactType}'
+                WHERE "artefactTypeID" = {artefactTypeID};"""
+        self.execute(sql, commit=True)
+        return "Artefact type has been updated"
 
-        sql = f"""UPDATE table_name
-                SET column1 = value1,
-                column2 = value2
-                WHERE condition;"""
+    def updateArtefact(self, artefactID, columsToUpdate: list, values: list):
+        """ Update artefact. """
+
+        if (len(columsToUpdate) == len(values)) and len(values) != 0:
+            sql = f"""UPDATE "Artefact" SET """
+            i = 0
+            while i < len(columsToUpdate):
+                if type(values[i]) != int:
+                    values[i] = "'" + values[i] + "'"
+                if i == len(columsToUpdate) - 1:
+                    sql += f"\"{columsToUpdate[i]}\" = {values[i]} "
+                else:
+                    sql += f"\"{columsToUpdate[i]}\" = {values[i]}, "
+                i += 1
+            sql += f"""WHERE "artefactID" = {artefactID}"""
+            self.execute(sql, commit=True)
+            return "Artefact has been updated"
+        return "Something went wrong"
         return self.execute(sql)
 
     # ---------------------------------- DELETE ---------------------------------- #
