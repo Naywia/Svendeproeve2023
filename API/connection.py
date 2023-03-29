@@ -87,79 +87,49 @@ class Connection:
                   WHERE "email" = '{email}'"""
         return self.execute(sql, single=True)
 
-    def getUserInfo(self, employeeID):
-        """ Get user infomation"""
-        sql = f"""SELECT "employeeID", "firstName", "lastName", "email", "phoneNumber", "employeeType"
-                  FROM "Employee"
-                  INNER JOIN "EmployeeType" ON "Employee"."employeeTypeID" = "EmployeeType"."employeeTypeID"
-                  WHERE "employeeID" = '{employeeID}'"""
-        return self.execute(sql)
-
-    def getUsers(self):
-        """ Get all users"""
+    def getUsers(self, employeeID = None):
+        """ Get all or one user"""
         sql = f"""SELECT "employeeID", "firstName", "lastName", "email", "phoneNumber", "employeeType" 
                   FROM "Employee"
                   INNER JOIN "EmployeeType" ON "Employee"."employeeTypeID" = "EmployeeType"."employeeTypeID" """
+        if employeeID:
+            sql += f"""WHERE "employeeID" = '{employeeID}'"""
         return self.execute(sql)
 
-    def getStorageInfo(self, storageID):
-        """ Get infomation for one storage. """
-        sql = f"""SELECT "storageID", "storageName" 
-                  FROM "Storage"
-                  WHERE "storageID" = {storageID}"""
-        return self.execute(sql)
-
-    def getStorages(self):
-        """ Get all storages. """
+    def getStorages(self, storageID = None):
+        """ Get all or one storage. """
         sql = f"""SELECT "storageID", "storageName" 
                   FROM "Storage" """
+        if storageID:
+            sql += f"""WHERE "storageID" = {storageID}"""
         return self.execute(sql)
 
-    def getPlacementInfo(self, placementID):
-        """ Get infomation for one placement. """
-        sql = f"""SELECT "placementID", "storageName", "shelf", "row"
-                  FROM "StoragePlacement"
-                  INNER JOIN "Storage" ON "StoragePlacement"."storageID" = "Storage"."storageID"
-                  WHERE "placementID" = {placementID}"""
-        return self.execute(sql)
-
-    def getPlacements(self):
-        """ Get all artefacts. """
+    def getPlacements(self, placementID = None):
+        """ Get all or one placement. """
         sql = f"""SELECT "placementID", "storageName", "shelf", "row"
                   FROM "StoragePlacement"
                   INNER JOIN "Storage" ON "StoragePlacement"."storageID" = "Storage"."storageID" """
+        if placementID:
+            sql += f"""WHERE "placementID" = {placementID}"""        
         return self.execute(sql)
 
-    def getArtefactTypeInfo(self, artefactTypeID):
-        """ Get infomation for one artefactType. """
-        sql = f"""SELECT "artefactTypeID", "artefactType"
-                  FROM "ArtefactType"
-                  WHERE "artefactTypeID" = {artefactTypeID}"""
-        return self.execute(sql)
-
-    def getArtefactTypes(self):
-        """ Get all artefactTypes. """
+    def getArtefactTypes(self, artefactTypeID = None):
+        """ Get all or one artefactType. """
         sql = f"""SELECT "artefactTypeID", "artefactType"
                   FROM "ArtefactType" """
+        if artefactTypeID:
+            sql += f"""WHERE "artefactTypeID" = {artefactTypeID}"""                
         return self.execute(sql)
 
-    def getArtefactInfo(self, artefactID):
-        """ Get infomation for one artefact. """
-        sql = f"""SELECT "artefactID", "artefact", "artefactDescription", "artefactType", "storageName", "shelf", "row" 
-                  FROM "Artefact"
-                  INNER JOIN "ArtefactType" ON "Artefact"."artefactTypeID" = "ArtefactType"."artefactTypeID"
-                  INNER JOIN "StoragePlacement" ON "Artefact"."placementID" = "StoragePlacement"."placementID"
-                  INNER JOIN "Storage" ON "StoragePlacement"."storageID" = "Storage"."storageID"
-                  WHERE "artefactID" = {artefactID}"""
-        return self.execute(sql)
-
-    def getArtefacts(self):
-        """ Get all artefacts. """
+    def getArtefacts(self, artefactID = None):
+        """ Get all or one artefact. """
         sql = f"""SELECT "artefactID", "artefact", "artefactDescription", "artefactType", "storageName", "shelf", "row" 
                   FROM "Artefact"
                   INNER JOIN "ArtefactType" ON "Artefact"."artefactTypeID" = "ArtefactType"."artefactTypeID"
                   INNER JOIN "StoragePlacement" ON "Artefact"."placementID" = "StoragePlacement"."placementID"
                   INNER JOIN "Storage" ON "StoragePlacement"."storageID" = "Storage"."storageID" """
+        if artefactID:
+            sql += f"""WHERE "artefactID" = {artefactID}"""         
         return self.execute(sql)
 
     # ---------------------------------- UPDATE ---------------------------------- #
