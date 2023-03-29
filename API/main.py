@@ -34,9 +34,11 @@ class Archaeologygallery:
         access_token_expires = datetime.timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         accessToken = Authorize().createAccessToken(data={"sub": user[1], "role": user[3]}, expires_delta=access_token_expires)
 
-        content = {"Message": "You've logged in.", "employeeID": user[0]}
+        content = {"access_token": accessToken, "token_type": "bearer","Message": "You've logged in.", "employeeID": user[0]}
         headers = {"Authorization": f"Bearer {accessToken}"}
         return JSONResponse(content=content, headers=headers)
+
+    # -------------------------------------- CREATE -------------------------------------- #
 
     @api.post("/employeeType", status_code=201, summary="Create new employee type.")
     async def addEmployeeType(employeeType: EmployeeType, response: Response, token: Token = Depends(Authorize().validateJWT)):
@@ -75,7 +77,8 @@ class Archaeologygallery:
         Conn().insertArtefact(artefact.artefact, artefact.artefactDescription, artefact.artefactTypeID, artefact.placementID)
         return {'message': 'Artefact has been created'}
 
-    # READ
+    # --------------------------------------- READ --------------------------------------- #
+
     @api.get("/user", summary="Get all or one user")
     def getUser(userID: int = None, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for getting all users or one specific user. """
@@ -83,7 +86,7 @@ class Archaeologygallery:
         result = []
         if userID:
             title = "User"
-            users = Conn().getUserInfo(userID)
+            users = Conn().getUsers(userID)
         else:
             title = "Users"
             users = Conn().getUsers()
@@ -109,7 +112,7 @@ class Archaeologygallery:
         result = []
         if storageID:
             title = "Storage"
-            storages = Conn().getStorageInfo(storageID)
+            storages = Conn().getStorages(storageID)
         else:
             title = "Storages"
             storages = Conn().getStorages()
@@ -131,7 +134,7 @@ class Archaeologygallery:
         result = []
         if placementID:
             title = "Placement"
-            placements = Conn().getPlacementInfo(placementID)
+            placements = Conn().getPlacements(placementID)
         else:
             title = "Placements"
             placements = Conn().getPlacements()
@@ -156,7 +159,7 @@ class Archaeologygallery:
         result = []
         if artefactTypeID:
             title = "Artefact Type"
-            atypes = Conn().getArtefactTypeInfo(artefactTypeID)
+            atypes = Conn().getArtefactTypes(artefactTypeID)
         else:
             title = "Artefact Types"
             atypes = Conn().getArtefactTypes()
@@ -178,7 +181,7 @@ class Archaeologygallery:
         result = []
         if artefactID:
             title = "Artefact"
-            artefacts = Conn().getArtefactInfo(artefactID)
+            artefacts = Conn().getArtefacts(artefactID)
         else:
             title = "Artefacts"
             artefacts = Conn().getArtefacts()
@@ -199,7 +202,7 @@ class Archaeologygallery:
 
         return {title: result}
 
-    # UPDATE
+    # -------------------------------------- UPDATE -------------------------------------- #
     @api.patch("/storage", summary="Update storage")
     def updateStorage(storageID: int, storage: Storage, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating a storage. """
@@ -279,7 +282,7 @@ class Archaeologygallery:
 
         return {title: result}
 
-    # DELETE
+    # -------------------------------------- DELETE -------------------------------------- #
     
 
 uvicorn.run(Archaeologygallery().api, host='0.0.0.0', port=8000)
