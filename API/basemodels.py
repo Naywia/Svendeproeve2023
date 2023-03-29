@@ -36,7 +36,7 @@ class UpdateStoragePlacement(BaseModel):
     storageID: int = None
 
 class ArtefactType(BaseModel):
-    """ Request body when adding a new artefact type. """
+    """ Request body when adding or updating a artefact type. """
     artefactType: str
 
 class Artefact(BaseModel):
