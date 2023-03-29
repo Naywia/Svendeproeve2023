@@ -249,7 +249,7 @@ class Archaeologygallery:
         return {'message': result}
 
     @api.patch("/placement", summary="Update storage placement")
-    def getPlacement(placementID: int, placement: UpdateStoragePlacement, token: Token = Depends(Authorize().validateJWT)):
+    def updatePlacement(placementID: int, placement: UpdateStoragePlacement, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating a placement. """
         columsToUpdate = []
         values = []
@@ -270,7 +270,7 @@ class Archaeologygallery:
         return {"message": result}
 
     @api.patch("/artefactType", summary="Update an artefact type")
-    def getArtefactType(artefactTypeID: int, aType: ArtefactType, token: Token = Depends(Authorize().validateJWT)):
+    def updateArtefactType(artefactTypeID: int, aType: ArtefactType, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating an artefact type. """
         result = Conn().updateArtefactType(artefactTypeID, aType.artefactType)
         return {'message': result}
