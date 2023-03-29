@@ -220,3 +220,32 @@ class Connection:
 
     # ---------------------------------- DELETE ---------------------------------- #
     
+    def deleteUser(self, employeeID):
+        """ Delete user"""
+        sql = f"""DELETE "Employee" FROM "Employee"
+                WHERE "employeeID" = '{employeeID}'"""
+        return self.execute(sql)
+
+    def deleteStorage(self, storageID):
+        """ Delete storage. """
+        sql = f"""DELETE "Storage" FROM "Storage"
+                WHERE "storageID" = {storageID}"""
+        return self.execute(sql)
+
+    def deletePlacement(self, placementID):
+        """ Delete placement. """
+        sql = f"""DELETE "StoragePlacement" FROM "StoragePlacement"
+                WHERE "placementID" = {placementID}"""        
+        return self.execute(sql)
+
+    def deleteArtefactType(self, artefactTypeID):
+        """ Delete artefactType. """
+        sql = f"""DELETE "ArtefactType" FROM "ArtefactType"
+                WHERE "artefactTypeID" = {artefactTypeID}"""                
+        return self.execute(sql)
+
+    def deleteArtefact(self, artefactID):
+        """ Delete artefact. """
+        sql = f"""DELETE "Artefact" FROM "Artefact"
+                WHERE "artefactID" = {artefactID}"""         
+        return self.execute(sql)
