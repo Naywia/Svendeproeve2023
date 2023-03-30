@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Android.OS;
+using Newtonsoft.Json;
 
 namespace Arkaeologigalleriet.ViewModels
 {
@@ -12,7 +13,7 @@ namespace Arkaeologigalleriet.ViewModels
             
         }
 
-        public async Task<LoginResponce> Login(string email, string password)
+        public async Task<LoginResponce> Login(string email = "ppedal@ag.dk", string password = "MandenMedDenGuleHat")
         {
             LoginResponce loginResponce = new LoginResponce();
             _client = new HttpClient();
@@ -24,7 +25,7 @@ namespace Arkaeologigalleriet.ViewModels
                     new KeyValuePair<string, string>("password", password)
                 };
 
-                HttpResponseMessage response = await _client.PostAsync("http://192.168.1.100:8000/login", new FormUrlEncodedContent(nvc));
+                HttpResponseMessage response = await _client.PostAsync(_url + "login", new FormUrlEncodedContent(nvc));
                 if (response.IsSuccessStatusCode)
                 {
                     var headers = response.Headers;
@@ -38,13 +39,15 @@ namespace Arkaeologigalleriet.ViewModels
                 {
                     loginResponce = JsonConvert.DeserializeObject<LoginResponce>(payload);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Console.Out.WriteLine(ex.Message);
                     return null;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.Out.WriteLine(ex.Message);
                 return null;        
             }
             return loginResponce;
