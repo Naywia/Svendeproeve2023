@@ -1,12 +1,7 @@
-pip install fastapi
-pip install uvicorn
-pip install python-jose
-pip install passlib
-pip install bcrypt
-pip install psycopg2
-pip install python-multipart
-
-
-
-# No
-pip install mysql-connector-python==8.0.29
+python -m pip install fastapi
+python -m pip install uvicorn
+python -m pip install python-jose
+python -m pip install passlib
+python -m pip install bcrypt
+python -m pip install psycopg2
+python -m pip install python-multipart
