@@ -50,7 +50,7 @@ class Archaeologygallery:
     @api.post("/user", status_code=201, summary="Create new employee.")
     async def addUser(user: User, response: Response, token: Token = Depends(Authorize().validateJWT)):
         """ Endpoint for creating a new user. """
-        Conn().insertUser(user.firstName, user.lastName, user.email, Authorize().hashPassword(user.password), user.doorCode, user.phoneNumber, user.employeeTypeID)
+        Conn().insertUser(user.firstName, user.lastName, user.email, Authorize().hashPassword(user.password), user.doorCode, user.phoneNumber, user.address, user.postal, user.employeeTypeID)
         return {'message': 'User has been created'}
 
     @api.post("/storage", status_code=201, summary="Create new storage.")
@@ -98,11 +98,34 @@ class Archaeologygallery:
             temp['LastName'] = users[i][2]
             temp['Email'] = users[i][3]
             temp['PhoneNumber'] = users[i][4]
-            temp['EmployeeType'] = users[i][5]
+            temp['Address'] = users[i][5]
+            temp['Postal'] = users[i][6]
+            temp['City'] = users[i][7]
+            temp['EmployeeType'] = users[i][8]
 
             result.append(temp)
             i += 1
+        return {title: result}
 
+    @api.get("/postal", summary="Get all or one postal")
+    def getPostal(postal: int = None, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for getting all users or one specific user. """
+        # If the postal isn't none.
+        result = []
+        if postal:
+            title = "Postal"
+            postalCity = Conn().getPostal(postal)
+        else:
+            title = "Postals"
+            postalCity = Conn().getPostal()
+        i = 0
+        while i < len(postalCity):
+            temp = {}
+            temp['Postal'] = postalCity[i][0]
+            temp['City'] = postalCity[i][1]
+
+            result.append(temp)
+            i += 1
         return {title: result}
 
     @api.get("/storage", summary="Get all or one storage")

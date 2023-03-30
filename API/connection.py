@@ -48,10 +48,10 @@ class Connection:
             VALUES ('{employeeType}');"""
         self.execute(sql, commit=True)
 
-    def insertUser(self, firstName, lastName, email, password, doorCode, phoneNumber, employeeTypeID):
+    def insertUser(self, firstName, lastName, email, password, doorCode, phoneNumber, address, postal, employeeTypeID):
         """ Insert a new employee into the database. """
-        sql = f"""INSERT INTO "Employee" ("firstName", "lastName", "email", "password", "doorCode", "phoneNumber", "employeeTypeID")
-            VALUES ('{firstName}', '{lastName}', '{email}', '{password}', {doorCode}, {phoneNumber}, {employeeTypeID});"""
+        sql = f"""INSERT INTO "Employee" ("firstName", "lastName", "email", "password", "doorCode", "phoneNumber", "address", "postal", "employeeTypeID")
+            VALUES ('{firstName}', '{lastName}', '{email}', '{password}', {doorCode}, {phoneNumber}, '{address}', {postal}, {employeeTypeID});"""
         self.execute(sql, commit=True)
 
     def insertStorage(self, storageName):
@@ -89,11 +89,22 @@ class Connection:
 
     def getUsers(self, employeeID = None):
         """ Get all or one user"""
-        sql = f"""SELECT "employeeID", "firstName", "lastName", "email", "phoneNumber", "employeeType" 
+        sql = f"""SELECT "employeeID", "firstName", "lastName", "email", "phoneNumber", "address", "Postal"."postal", "city", "employeeType" 
                   FROM "Employee"
-                  INNER JOIN "EmployeeType" ON "Employee"."employeeTypeID" = "EmployeeType"."employeeTypeID" """
+                  INNER JOIN "EmployeeType" ON "Employee"."employeeTypeID" = "EmployeeType"."employeeTypeID"
+                  INNER JOIN "Postal" ON "Employee"."postal" = "Postal"."postal" """
         if employeeID:
             sql += f"""WHERE "employeeID" = '{employeeID}'"""
+        sql += f"""ORDER BY "employeeID" ASC"""
+        return self.execute(sql)
+
+    def getPostal(self, postal = None):
+        """ Get all or one postal"""
+        sql = f"""SELECT "postal", "city"
+                FROM "Postal" """
+        if postal:
+            sql += f"""WHERE "postal" = '{postal}'"""
+        sql += f"""ORDER BY "postal" ASC"""
         return self.execute(sql)
 
     def getStorages(self, storageID = None):

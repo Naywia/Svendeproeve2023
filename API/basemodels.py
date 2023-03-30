@@ -17,6 +17,8 @@ class User(BaseModel):
     password: str
     doorCode: int
     phoneNumber: int
+    address: str
+    postal: int
     employeeTypeID: int
 
 class UpdateUser(BaseModel):
@@ -25,6 +27,8 @@ class UpdateUser(BaseModel):
     lastName: str = None
     email: str = None
     phoneNumber: int = None
+    address: str = None
+    postal: int = None
     employeeTypeID: int = None
 
 class UpdatePsw(BaseModel):
