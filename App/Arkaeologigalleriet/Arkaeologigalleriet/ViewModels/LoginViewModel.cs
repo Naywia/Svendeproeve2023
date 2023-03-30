@@ -1,5 +1,4 @@
-﻿using Android.OS;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Arkaeologigalleriet.ViewModels
 {
@@ -10,7 +9,7 @@ namespace Arkaeologigalleriet.ViewModels
 
         public LoginViewModel()
         {
-            
+
         }
 
         public async Task<LoginResponce> Login(string email = "ppedal@ag.dk", string password = "MandenMedDenGuleHat")
@@ -31,31 +30,36 @@ namespace Arkaeologigalleriet.ViewModels
                     var headers = response.Headers;
                     if (headers.Contains("Authorization"))
                     {
-                        await SecureStorage.Default.SetAsync("JWT", headers.GetValues("Authorization").First());
+                        await SecureStorage.Default.SetAsync("JWT", headers.GetValues("Authorization").First().Replace("Bearer ", ""));
                     }
-                }
-                string payload = await response.Content.ReadAsStringAsync();
-                try
-                {
-                    loginResponce = JsonConvert.DeserializeObject<LoginResponce>(payload);
-                }
-                catch (Exception ex)
-                {
-                    Console.Out.WriteLine(ex.Message);
-                    return null;
+
+                    string payload = await response.Content.ReadAsStringAsync();
+                    try
+                    {
+                        loginResponce = JsonConvert.DeserializeObject<LoginResponce>(payload);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Out.WriteLine(ex.Message);
+                        return null;
+                    }
+                    
+                    await App.ShellViewModel.GetUserDetalis(loginResponce.employeeID);
+                    return loginResponce;
                 }
             }
             catch (Exception ex)
             {
                 Console.Out.WriteLine(ex.Message);
-                return null;        
+                return null;
             }
-            return loginResponce;
+            return null;
         }
     }
 
     public class LoginResponce
     {
-        public string Responce { get; set; }
+        public string Message { get; set; }
+        public int employeeID { get; set; }
     }
 }

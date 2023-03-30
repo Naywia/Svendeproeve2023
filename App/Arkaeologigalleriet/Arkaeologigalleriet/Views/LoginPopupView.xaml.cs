@@ -20,7 +20,7 @@ public partial class LoginPopupView : ContentPage
 
     private async void EmpLoginBtn(object sender, EventArgs e) 
     {
-        var loginresponce = await _vm.Login(UsernameEntry.Text, PasswordEntry.Text);
+        var loginresponce = await _vm.Login();
         if (loginresponce != null)
         {
             await Application.Current.MainPage.Navigation.PopModalAsync();

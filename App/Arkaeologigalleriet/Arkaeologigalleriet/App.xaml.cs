@@ -1,9 +1,11 @@
-﻿using Arkaeologigalleriet.Views;
+﻿using Arkaeologigalleriet.ViewModels;
+using Arkaeologigalleriet.Views;
 
 namespace Arkaeologigalleriet;
 
 public partial class App : Application
 {
+	public static AppShellViewModel ShellViewModel = new AppShellViewModel();
 	public App()
 	{
 		InitializeComponent();

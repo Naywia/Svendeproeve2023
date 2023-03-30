@@ -7,7 +7,16 @@
     xmlns:views="clr-namespace:Arkaeologigalleriet.Views"
     Shell.FlyoutBehavior="Flyout">
 
-
+    <Shell.FlyoutHeaderTemplate>
+        <DataTemplate>
+            <HorizontalStackLayout Padding="15" BackgroundColor="#1b1b3a">
+                <ImageButton Source="abstract_user_flat_4.svg" HeightRequest="25" WidthRequest="30"/>
+                <Label Text="{Binding EmployeeModel.FirstName}" Margin="25,0,5,0" TextColor="#e4dfda" VerticalTextAlignment="Center"/>
+                <Label Text="{Binding EmployeeModel.LastName}" TextColor="#e4dfda" VerticalTextAlignment="Center"/>
+            </HorizontalStackLayout>
+        </DataTemplate>
+    </Shell.FlyoutHeaderTemplate>
+    
     <ShellContent
         Title="Søg"
         ContentTemplate="{DataTemplate views:SearchView}"
