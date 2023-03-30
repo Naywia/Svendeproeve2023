@@ -45,7 +45,7 @@ class Connection:
     def insertEmployeeType(self, employeeType):
         """ Insert a employee type into the database. """
         sql = f"""INSERT INTO "EmployeeType" ("employeeType")
-            VALUES ('{employeeType}');"""
+                VALUES ('{employeeType}')"""
         self.execute(sql, commit=True)
 
     def insertUser(self, firstName, lastName, email, password, doorCode, phoneNumber, address, postal, employeeTypeID):
@@ -87,6 +87,22 @@ class Connection:
                   WHERE "email" = '{email}'"""
         return self.execute(sql, single=True)
 
+    def getPassword(self, employeeID):
+        """ Get user infomation, to login. """
+        sql = f"""SELECT "password"
+                  FROM "Employee"
+                  WHERE "employeeID" = '{employeeID}'"""
+        return self.execute(sql, single=True)
+
+    def getEmployeeTypes(self, employeeTypeID = None):
+        """ Get all or one employee type. """
+        sql = f"""SELECT "employeeTypeID", "employeeType"
+                  FROM "EmployeeType" """
+        if employeeTypeID:
+            sql += f"""WHERE "employeeTypeID" = {employeeTypeID}"""    
+        sql += f"""ORDER BY "employeeTypeID" ASC"""                  
+        return self.execute(sql)
+
     def getUsers(self, employeeID = None):
         """ Get all or one user"""
         sql = f"""SELECT "employeeID", "firstName", "lastName", "email", "phoneNumber", "address", "Postal"."postal", "city", "employeeType" 
@@ -113,6 +129,7 @@ class Connection:
                   FROM "Storage" """
         if storageID:
             sql += f"""WHERE "storageID" = {storageID}"""
+        sql += f"""ORDER BY "storageID" ASC"""
         return self.execute(sql)
 
     def getPlacements(self, placementID = None):
@@ -121,7 +138,8 @@ class Connection:
                   FROM "StoragePlacement"
                   INNER JOIN "Storage" ON "StoragePlacement"."storageID" = "Storage"."storageID" """
         if placementID:
-            sql += f"""WHERE "placementID" = {placementID}"""        
+            sql += f"""WHERE "placementID" = {placementID}"""   
+        sql += f"""ORDER BY "placementID" ASC"""     
         return self.execute(sql)
 
     def getArtefactTypes(self, artefactTypeID = None):
@@ -129,7 +147,8 @@ class Connection:
         sql = f"""SELECT "artefactTypeID", "artefactType"
                   FROM "ArtefactType" """
         if artefactTypeID:
-            sql += f"""WHERE "artefactTypeID" = {artefactTypeID}"""                
+            sql += f"""WHERE "artefactTypeID" = {artefactTypeID}"""    
+        sql += f"""ORDER BY "artefactTypeID" ASC"""                  
         return self.execute(sql)
 
     def getArtefacts(self, artefactID = None):
@@ -140,7 +159,8 @@ class Connection:
                   INNER JOIN "StoragePlacement" ON "Artefact"."placementID" = "StoragePlacement"."placementID"
                   INNER JOIN "Storage" ON "StoragePlacement"."storageID" = "Storage"."storageID" """
         if artefactID:
-            sql += f"""WHERE "artefactID" = {artefactID}"""         
+            sql += f"""WHERE "artefactID" = {artefactID}"""    
+        sql += f"""ORDER BY "artefactID" ASC"""                 
         return self.execute(sql)
 
     # ---------------------------------- UPDATE ---------------------------------- #
@@ -163,7 +183,6 @@ class Connection:
             self.execute(sql, commit=True)
             return "User has been updated"
         return "Something went wrong"
-        return self.execute(sql)
 
     def updatePassword(self, employeeID, oldPassword, newPassword):
         """ Update password. """
@@ -199,7 +218,6 @@ class Connection:
             self.execute(sql, commit=True)
             return "Placement has been updated"
         return "Something went wrong"
-        return self.execute(sql)
     
     def updateArtefactType(self, artefactTypeID, artefactType):
         """ Update artefact type. """
@@ -227,7 +245,6 @@ class Connection:
             self.execute(sql, commit=True)
             return "Artefact has been updated"
         return "Something went wrong"
-        return self.execute(sql)
 
     # ---------------------------------- DELETE ---------------------------------- #
     

@@ -43,7 +43,7 @@ class Archaeologygallery:
     @api.post("/employeeType", status_code=201, summary="Create new employee type.")
     async def addEmployeeType(employeeType: EmployeeType, response: Response, token: Token = Depends(Authorize().validateJWT)):
         """ Endpoint for creating a new user. """
-        Conn().insertEmployeeType(employeeType)
+        Conn().insertEmployeeType(employeeType.employeeType)
         return {'message': 'Employee type has been created'}
 
     # Create a new user. 
@@ -78,6 +78,27 @@ class Archaeologygallery:
         return {'message': 'Artefact has been created'}
 
     # --------------------------------------- READ --------------------------------------- #
+
+    @api.get("/employeeType", summary="Get all or one employee type.")
+    def getEmployeeType(employeeTypeID: int = None, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpoint for creating a new user. """
+        # If the employeeTypeID isn't none.
+        result = []
+        if employeeTypeID:
+            title = "empType"
+            empTypes = Conn().getEmployeeTypes(employeeTypeID)
+        else:
+            title = "empType"
+            empTypes = Conn().getEmployeeTypes()
+        i = 0
+        while i < len(empTypes):
+            temp = {}
+            temp['ID'] = empTypes[i][0]
+            temp['EmployeeType'] = empTypes[i][1]
+
+            result.append(temp)
+            i += 1
+        return {title: result}
 
     @api.get("/user", summary="Get all or one user")
     def getUser(userID: int = None, token: Token = Depends(Authorize().validateJWT)):
@@ -147,7 +168,6 @@ class Archaeologygallery:
 
             result.append(temp)
             i += 1
-
         return {title: result}
 
     @api.get("/placement", summary="Get all or one storage placement")
@@ -172,7 +192,6 @@ class Archaeologygallery:
 
             result.append(temp)
             i += 1
-
         return {title: result}
 
     @api.get("/artefactType", summary="Get all or one artefact type")
@@ -194,7 +213,6 @@ class Archaeologygallery:
 
             result.append(temp)
             i += 1
-
         return {title: result}
 
     @api.get("/artefact", summary="Get all or one artefact")
@@ -222,10 +240,16 @@ class Archaeologygallery:
 
             result.append(temp)
             i += 1
-
+            
         return {title: result}
 
     # -------------------------------------- UPDATE -------------------------------------- #
+
+    @api.patch("/employeeType", summary="Update employee type")
+    def updateEmployeeType(employeeTypeID: int, employeeType: EmployeeType, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for updating an employee type. """
+        result = Conn().updateEmployeeType(employeeTypeID, employeeType.employeeType)
+        return {'message': result}
 
     @api.patch("/user", summary="Update user")
     def updateUser(userID: int, user: UpdateUser, token: Token = Depends(Authorize().validateJWT)):
@@ -246,6 +270,12 @@ class Archaeologygallery:
         if user.phoneNumber:
             columsToUpdate.append("phoneNumber")
             values.append(user.phoneNumber)
+        if user.address:
+            columsToUpdate.append("address")
+            values.append(user.address)
+        if user.postal:
+            columsToUpdate.append("postal")
+            values.append(user.postal)
         if user.employeeTypeID:
             columsToUpdate.append("employeeTypeID")
             values.append(user.employeeTypeID)
@@ -258,11 +288,16 @@ class Archaeologygallery:
     @api.patch("/password", summary="Update user password")
     def updatePassword(userID: int, psw: UpdatePsw, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating a users password. """
-        if psw.newPassword == psw.repeatNewPassword:
-            result = Conn().updatePassword(userID, psw.oldPassword, psw.newPassword)
+        hashed_password = Conn().getPassword(userID)
+        if Authorize().verifyPassword(oldPassword, hashed_password):
+            if psw.newPassword == psw.repeatNewPassword:
+                result = Conn().updatePassword(userID, hashed_password, Authorize().hashPassword(psw.newPassword))
+            else:
+                response.status_code = status.HTTP_400_BAD_REQUEST
+                result = "Passwords doesn't match."
         else:
-            response.status_code = status.HTTP_400_BAD_REQUEST
-            result = "Passwords doesn't match."
+                response.status_code = status.HTTP_400_BAD_REQUEST
+                result = "Old password doesn't fit."
         return {'message': result}
         
     @api.patch("/storage", summary="Update storage")
