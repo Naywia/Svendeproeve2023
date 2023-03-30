@@ -231,32 +231,47 @@ class Connection:
 
     # ---------------------------------- DELETE ---------------------------------- #
     
-    def deleteUser(self, employeeID):
+    def deleteEmployeeType(self, employeeTypeID):
+        """ Delete employee type. """
+        sql = f"""DELETE FROM "EmployeeType"
+                WHERE "employeeTypeID" = '{employeeTypeID}'"""
+        return self.execute(sql, commit=True)
+
+    def deleteUser(self, employeeID, what="employeeID"):
         """ Delete user"""
-        sql = f"""DELETE "Employee" FROM "Employee"
+        sql = f"""DELETE FROM "Employee"
                 WHERE "employeeID" = '{employeeID}'"""
-        return self.execute(sql)
+        return self.execute(sql, commit=True)
 
     def deleteStorage(self, storageID):
         """ Delete storage. """
-        sql = f"""DELETE "Storage" FROM "Storage"
+        self.deletePlacement(storageID, what="storageID")
+        sql = f"""DELETE FROM "Storage"
                 WHERE "storageID" = {storageID}"""
-        return self.execute(sql)
+        return self.execute(sql, commit=True)
 
-    def deletePlacement(self, placementID):
+    def deletePlacement(self, ID, what = "placementID"):
         """ Delete placement. """
-        sql = f"""DELETE "StoragePlacement" FROM "StoragePlacement"
-                WHERE "placementID" = {placementID}"""        
-        return self.execute(sql)
+        if what == "placementID":
+            self.deleteArtefact(ID, what=what)
+        else:
+            delete = f"""SELECT "placementID" FROM "StoragePlacement" WHERE "{what}" = {ID}"""
+            ids = self.execute(delete)
+            for id in ids:
+                self.deleteArtefact(id, what="placementID")
+        sql = f"""DELETE FROM "StoragePlacement"
+                WHERE "{what}" = {ID}"""        
+        return self.execute(sql, commit=True)
 
     def deleteArtefactType(self, artefactTypeID):
         """ Delete artefactType. """
-        sql = f"""DELETE "ArtefactType" FROM "ArtefactType"
+        self.deleteArtefact(artefactTypeID, what="artefactTypeID")
+        sql = f"""DELETE FROM "ArtefactType"
                 WHERE "artefactTypeID" = {artefactTypeID}"""                
-        return self.execute(sql)
+        return self.execute(sql, commit=True)
 
-    def deleteArtefact(self, artefactID):
+    def deleteArtefact(self, ID, what = "artefactID"):
         """ Delete artefact. """
-        sql = f"""DELETE "Artefact" FROM "Artefact"
-                WHERE "artefactID" = {artefactID}"""         
-        return self.execute(sql)
+        sql = f"""DELETE FROM "Artefact"
+                WHERE "{what}" = {ID}"""         
+        return self.execute(sql, commit=True)

@@ -325,24 +325,40 @@ class Archaeologygallery:
 
     # -------------------------------------- DELETE -------------------------------------- #
     
+    @api.delete("/employeeType", summary="Delete employee type")
+    def deleteEmployeeType(employeeTypeID: int, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for deleting an employee type. """
+        Conn().deleteEmployeeType(employeeTypeID)
+        return {"message": "Deleted employee type"}
+
     @api.delete("/user", summary="Delete user")
-    def getUser(userID: int, token: Token = Depends(Authorize().validateJWT)):
+    def deleteUser(userID: int, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for deleting a user. """
+        Conn().deleteUser(userID)
+        return {"message": "Deleted user"}
         
     @api.delete("/storage", summary="Delete storage")
-    def getStorage(storageID: int, token: Token = Depends(Authorize().validateJWT)):
+    def deleteStorage(storageID: int, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for deleint a storage. """
+        Conn().deleteStorage(storageID)
+        return {"message": "Deleted storage"}
 
     @api.delete("/placement", summary="Delete placement")
-    def getPlacement(placementID: int, token: Token = Depends(Authorize().validateJWT)):
+    def deletePlacement(placementID: int, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for deleting placement. """
+        Conn().deletePlacement(placementID)
+        return {"message": "Deleted placement"}
         
     @api.delete("/artefactType", summary="Delete artefact type")
-    def getArtefactType(artefactTypeID: int, token: Token = Depends(Authorize().validateJWT)):
+    def deleteArtefactType(artefactTypeID: int, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for deleting artefact type. """
+        Conn().deleteArtefactType(artefactTypeID)
+        return {"message": "Deleted artefactType"}
 
     @api.delete("/artefact", summary="Delete artefact")
-    def getArtefact(artefactID: int = None, token: Token = Depends(Authorize().validateJWT)):
+    def deleteArtefact(artefactID: int = None, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for deleting artefact. """
+        Conn().deleteArtefact(artefactID)
+        return {"message": "Deleted artefact"}
 
 uvicorn.run(Archaeologygallery().api, host='0.0.0.0', port=8000)
