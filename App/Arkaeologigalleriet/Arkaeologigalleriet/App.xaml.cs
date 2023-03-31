@@ -15,6 +15,6 @@ public partial class App : Application
 
     protected override void OnStart()
     {
-        Current.MainPage.Navigation.PushModalAsync(new LoginPopupView());
+        //Current.MainPage.Navigation.PushModalAsync(new LoginPopupView());
     }
 }

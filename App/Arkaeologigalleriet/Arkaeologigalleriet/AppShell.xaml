@@ -16,13 +16,6 @@
             </HorizontalStackLayout>
         </DataTemplate>
     </Shell.FlyoutHeaderTemplate>
-    
-    <ShellContent
-        Title="Søg"
-        ContentTemplate="{DataTemplate views:SearchView}"
-        Route="SearchView"
-        Icon="search.png"
-        />
 
     <ShellContent
         Title="Scan QR"
@@ -30,6 +23,15 @@
         Route="ScanQRView"
         Icon="thenounproject.png"
         />
+
+    <ShellContent
+        Title="Søg"
+        ContentTemplate="{DataTemplate views:SearchView}"
+        Route="SearchView"
+        Icon="search.png"
+        />
+
+    
     
 
     <Shell.FlyoutFooterTemplate>
