@@ -207,6 +207,14 @@ class Connection:
         self.execute(sql, commit=True)
         return "Password has been updated"
 
+    def updateEmployeeType(self, employeeTypeID, employeeType):
+        """ Update employee type. """
+        sql = f"""UPDATE "EmployeeType"
+                SET "employeeType" = '{employeeType}'
+                WHERE "employeeTypeID" = {employeeTypeID};"""
+        self.execute(sql, commit=True)
+        return "Employee type has been updated"
+
     def updateStorage(self, storageID, storageName):
         """ Update storage. """
         sql = f"""UPDATE "Storage"
