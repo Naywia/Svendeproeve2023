@@ -41,9 +41,9 @@ class Archaeologygallery:
     # -------------------------------------- CREATE -------------------------------------- #
 
     @api.post("/employeeType", status_code=201, summary="Create new employee type.")
-    async def addEmployeeType(employeeType: EmployeeType, response: Response, token: Token = Depends(Authorize().validateJWT)):
+    async def addEmployeeType(eType: EmployeeType, response: Response, token: Token = Depends(Authorize().validateJWT)):
         """ Endpoint for creating a new user. """
-        Conn().insertEmployeeType(employeeType.employeeType)
+        Conn().insertEmployeeType(eType.employeeType)
         return {'message': 'Employee type has been created'}
 
     # Create a new user. 
@@ -86,7 +86,7 @@ class Archaeologygallery:
     # --------------------------------------- READ --------------------------------------- #
 
     @api.get("/employeeType", summary="Get all or one employee type.")
-    def getEmployeeType(employeeTypeID: int = None, token: Token = Depends(Authorize().validateJWT)):
+    async def getEmployeeType(employeeTypeID: int = None, token: Token = Depends(Authorize().validateJWT)):
         """ Endpoint for creating a new user. """
         # If the employeeTypeID isn't none.
         result = []
@@ -107,7 +107,7 @@ class Archaeologygallery:
         return {title: result}
 
     @api.get("/user", summary="Get all or one user")
-    def getUser(userID: int = None, token: Token = Depends(Authorize().validateJWT)):
+    async def getUser(userID: int = None, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for getting all users or one specific user. """
         # If the userID isn't none.
         result = []
@@ -135,7 +135,7 @@ class Archaeologygallery:
         return {title: result}
 
     @api.get("/postal", summary="Get all or one postal")
-    def getPostal(postal: int = None, token: Token = Depends(Authorize().validateJWT)):
+    async def getPostal(postal: int = None, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for getting all users or one specific user. """
         # If the postal isn't none.
         result = []
@@ -156,7 +156,7 @@ class Archaeologygallery:
         return {title: result}
 
     @api.get("/storage", summary="Get all or one storage")
-    def getStorage(storageID: int = None, token: Token = Depends(Authorize().validateJWT)):
+    async def getStorage(storageID: int = None, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for getting all storages or one specific storage. """
         # If the storageID isn't none.
         result = []
@@ -177,7 +177,7 @@ class Archaeologygallery:
         return {title: result}
 
     @api.get("/placement", summary="Get all or one storage placement")
-    def getPlacement(placementID: int = None, token: Token = Depends(Authorize().validateJWT)):
+    async def getPlacement(placementID: int = None, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for getting all placements or one specific placement. """
         # If the placementID isn't none.
         result = []
@@ -201,7 +201,7 @@ class Archaeologygallery:
         return {title: result}
 
     @api.get("/artefactType", summary="Get all or one artefact type")
-    def getArtefactType(artefactTypeID: int = None, token: Token = Depends(Authorize().validateJWT)):
+    async def getArtefactType(artefactTypeID: int = None, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for getting all artefact types or one specific artefact type. """
         # If the artefactTypeID isn't none.
         result = []
@@ -222,7 +222,7 @@ class Archaeologygallery:
         return {title: result}
 
     @api.get("/artefact", summary="Get all or one artefact")
-    def getArtefact(artefactID: int = None, token: Token = Depends(Authorize().validateJWT)):
+    async def getArtefact(artefactID: int = None, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for getting all artefacts or one specific artefact. """
         # If the artefactID isn't none.
         result = []
@@ -273,13 +273,13 @@ class Archaeologygallery:
     # -------------------------------------- UPDATE -------------------------------------- #
 
     @api.patch("/employeeType", summary="Update employee type")
-    def updateEmployeeType(employeeTypeID: int, employeeType: EmployeeType, token: Token = Depends(Authorize().validateJWT)):
+    async def updateEmployeeType(employeeTypeID: int, eType: EmployeeType, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating an employee type. """
-        result = Conn().updateEmployeeType(employeeTypeID, employeeType.employeeType)
+        result = Conn().updateEmployeeType(employeeTypeID, eType.employeeType)
         return {'message': result}
 
     @api.patch("/user", summary="Update user")
-    def updateUser(userID: int, user: UpdateUser, token: Token = Depends(Authorize().validateJWT)):
+    async def updateUser(userID: int, user: UpdateUser, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating user infomation. """
         columsToUpdate = []
         values = []
@@ -313,7 +313,7 @@ class Archaeologygallery:
         return {"message": result}
 
     @api.patch("/password", summary="Update user password")
-    def updatePassword(userID: int, psw: UpdatePsw, token: Token = Depends(Authorize().validateJWT)):
+    async def updatePassword(userID: int, psw: UpdatePsw, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating a users password. """
         hashed_password = Conn().getPassword(userID)
         if Authorize().verifyPassword(oldPassword, hashed_password):
@@ -328,13 +328,13 @@ class Archaeologygallery:
         return {'message': result}
         
     @api.patch("/storage", summary="Update storage")
-    def updateStorage(storageID: int, storage: Storage, token: Token = Depends(Authorize().validateJWT)):
+    async def updateStorage(storageID: int, storage: Storage, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating a storage. """
         result = Conn().updateStorage(storageID, storage.storageName)
         return {'message': result}
 
     @api.patch("/placement", summary="Update storage placement")
-    def updatePlacement(placementID: int, placement: UpdateStoragePlacement, token: Token = Depends(Authorize().validateJWT)):
+    async def updatePlacement(placementID: int, placement: UpdateStoragePlacement, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating a placement. """
         columsToUpdate = []
         values = []
@@ -355,13 +355,13 @@ class Archaeologygallery:
         return {"message": result}
 
     @api.patch("/artefactType", summary="Update an artefact type")
-    def updateArtefactType(artefactTypeID: int, aType: ArtefactType, token: Token = Depends(Authorize().validateJWT)):
+    async def updateArtefactType(artefactTypeID: int, aType: ArtefactType, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating an artefact type. """
         result = Conn().updateArtefactType(artefactTypeID, aType.artefactType)
         return {'message': result}
 
     @api.patch("/artefact", summary="Update artefact")
-    def updateArtefact(artefactID: int, artefact: UpdateArtefact, token: Token = Depends(Authorize().validateJWT)):
+    async def updateArtefact(artefactID: int, artefact: UpdateArtefact, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating an artefact. """
         columsToUpdate = []
         values = []
@@ -394,37 +394,37 @@ class Archaeologygallery:
     # -------------------------------------- DELETE -------------------------------------- #
     
     @api.delete("/employeeType", summary="Delete employee type")
-    def deleteEmployeeType(employeeTypeID: int, token: Token = Depends(Authorize().validateJWT)):
+    async def deleteEmployeeType(employeeTypeID: int, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for deleting an employee type. """
         Conn().deleteEmployeeType(employeeTypeID)
         return {"message": "Deleted employee type"}
 
     @api.delete("/user", summary="Delete user")
-    def deleteUser(userID: int, token: Token = Depends(Authorize().validateJWT)):
+    async def deleteUser(userID: int, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for deleting a user. """
         Conn().deleteUser(userID)
         return {"message": "Deleted user"}
         
     @api.delete("/storage", summary="Delete storage")
-    def deleteStorage(storageID: int, token: Token = Depends(Authorize().validateJWT)):
+    async def deleteStorage(storageID: int, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for deleint a storage. """
         Conn().deleteStorage(storageID)
         return {"message": "Deleted storage"}
 
     @api.delete("/placement", summary="Delete placement")
-    def deletePlacement(placementID: int, token: Token = Depends(Authorize().validateJWT)):
+    async def deletePlacement(placementID: int, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for deleting placement. """
         Conn().deletePlacement(placementID)
         return {"message": "Deleted placement"}
         
     @api.delete("/artefactType", summary="Delete artefact type")
-    def deleteArtefactType(artefactTypeID: int, token: Token = Depends(Authorize().validateJWT)):
+    async def deleteArtefactType(artefactTypeID: int, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for deleting artefact type. """
         Conn().deleteArtefactType(artefactTypeID)
         return {"message": "Deleted artefactType"}
 
     @api.delete("/artefact", summary="Delete artefact")
-    def deleteArtefact(artefactID: int = None, token: Token = Depends(Authorize().validateJWT)):
+    async def deleteArtefact(artefactID: int = None, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for deleting artefact. """
         Conn().deleteArtefact(artefactID)
         return {"message": "Deleted artefact"}
