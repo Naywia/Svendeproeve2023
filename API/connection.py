@@ -78,6 +78,12 @@ class Connection:
             VALUES ('{artefact}', '{artefactDescription}', {artefactTypeID}, {placementID});"""
         self.execute(sql, commit=True)
 
+    def insertLogType(self, logType):
+        """ Insert a log type into the database. """
+        sql = f"""INSERT INTO "LogType" ("logType")
+                VALUES ('{logType}')"""
+        self.execute(sql, commit=True)
+
     # ----------------------------------- READ ----------------------------------- #
     # Get user info, for login.
     def login(self, email):
@@ -163,6 +169,15 @@ class Connection:
         sql += f"""ORDER BY "artefactID" ASC"""                 
         return self.execute(sql)
 
+    def getLogTypes(self, logTypeID = None):
+        """ Get all or one log type. """
+        sql = f"""SELECT "logTypeID", "logType"
+                  FROM "LogType" """
+        if logTypeID:
+            sql += f"""WHERE "logTypeID" = {logTypeID}"""    
+        sql += f"""ORDER BY "logTypeID" ASC"""                  
+        return self.execute(sql)
+
     # ---------------------------------- UPDATE ---------------------------------- #
     
     def updateUser(self, employeeID, columsToUpdate: list, values: list):
@@ -246,6 +261,14 @@ class Connection:
             return "Artefact has been updated"
         return "Something went wrong"
 
+    def updateLogType(self, logTypeID, logType):
+        """ Update log type. """
+        sql = f"""UPDATE "LogType"
+                SET "logType" = '{logType}'
+                WHERE "logTypeID" = {logTypeID};"""
+        self.execute(sql, commit=True)
+        return "Artefact type has been updated"
+
     # ---------------------------------- DELETE ---------------------------------- #
     
     def deleteEmployeeType(self, employeeTypeID):
@@ -290,5 +313,18 @@ class Connection:
     def deleteArtefact(self, ID, what = "artefactID"):
         """ Delete artefact. """
         sql = f"""DELETE FROM "Artefact"
+                WHERE "{what}" = {ID}"""         
+        return self.execute(sql, commit=True)
+
+    def deleteLogType(self, logTypeID):
+        """ Delete logType. """
+        self.deleteLog(logTypeID, what="logTypeID")
+        sql = f"""DELETE FROM "LogType"
+                WHERE "logTypeID" = {logTypeID}"""                
+        return self.execute(sql, commit=True)
+
+    def deleteLog(self, ID, what = "artefactID"):
+        """ Delete Log. """
+        sql = f"""DELETE FROM "Log"
                 WHERE "{what}" = {ID}"""         
         return self.execute(sql, commit=True)

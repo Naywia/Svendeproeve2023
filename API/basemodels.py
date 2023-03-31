@@ -70,3 +70,7 @@ class UpdateArtefact(BaseModel):
     artefactDescription: str = None
     artefactTypeID: int = None
     placementID: int = None
+
+class LogType(BaseModel):
+    """ Request body when adding or updating a log type. """
+    logType: str

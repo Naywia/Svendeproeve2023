@@ -77,6 +77,12 @@ class Archaeologygallery:
         Conn().insertArtefact(artefact.artefact, artefact.artefactDescription, artefact.artefactTypeID, artefact.placementID)
         return {'message': 'Artefact has been created'}
 
+    @api.post("/logType", status_code=201, summary="Create new log type.")
+    async def addLogType(lType: LogType, response: Response, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpoint for creating a new log type. """
+        Conn().insertLogType(lType.logType)
+        return {'message': 'Log type has been created'}
+
     # --------------------------------------- READ --------------------------------------- #
 
     @api.get("/employeeType", summary="Get all or one employee type.")
@@ -243,6 +249,27 @@ class Archaeologygallery:
             
         return {title: result}
 
+    @api.get("/logType", summary="Get all or one log type.")
+    async def getLogType(logTypeID: int = None, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for getting all log types or one specific log type. """
+        # If the logTypeID isn't none.
+        result = []
+        if logTypeID:
+            title = "Log Type"
+            ltypes = Conn().getLogTypes(logTypeID)
+        else:
+            title = "Log Types"
+            ltypes = Conn().getLogTypes()
+        i = 0
+        while i < len(ltypes):
+            temp = {}
+            temp['ID'] = ltypes[i][0]
+            temp['Type'] = ltypes[i][1]
+
+            result.append(temp)
+            i += 1
+        return {title: result}
+
     # -------------------------------------- UPDATE -------------------------------------- #
 
     @api.patch("/employeeType", summary="Update employee type")
@@ -358,6 +385,12 @@ class Archaeologygallery:
             response.status_code = status.HTTP_400_BAD_REQUEST
         return {"message": result}
 
+    @api.patch("/logType", summary="Update an log type")
+    async def updateLogType(logTypeID: int, lType: LogType, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for updating an log type. """
+        result = Conn().updateLogType(logTypeID, lType.logType)
+        return {'message': result}
+
     # -------------------------------------- DELETE -------------------------------------- #
     
     @api.delete("/employeeType", summary="Delete employee type")
@@ -395,5 +428,11 @@ class Archaeologygallery:
         """ Endpont for deleting artefact. """
         Conn().deleteArtefact(artefactID)
         return {"message": "Deleted artefact"}
+
+    @api.delete("/logType", summary="Delete log type")
+    async def deleteArtefactType(logTypeID: int, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for deleting log type. """
+        Conn().deleteLogType(logTypeID)
+        return {"message": "Deleted logType"}
 
 uvicorn.run(Archaeologygallery().api, host='0.0.0.0', port=8000)
