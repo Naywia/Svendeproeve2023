@@ -74,3 +74,11 @@ class UpdateArtefact(BaseModel):
 class LogType(BaseModel):
     """ Request body when adding or updating a log type. """
     logType: str
+
+class Log(BaseModel):
+    """ Request body when adding a log incident. """
+    incident: str
+    incidentDate: str
+    logTypeID: int
+
+

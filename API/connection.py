@@ -84,6 +84,12 @@ class Connection:
                 VALUES ('{logType}')"""
         self.execute(sql, commit=True)
 
+    def insertLog(self, incident, incidentDate, logTypeID):
+        """ Insert a log incident into the database. """
+        sql = f"""INSERT INTO "Log" ("incident", "incidentDate", "logTypeID")
+                VALUES ('{incident}', '{incidentDate}', {logTypeID})"""
+        self.execute(sql, commit=True)
+
     # ----------------------------------- READ ----------------------------------- #
     # Get user info, for login.
     def login(self, email):
@@ -176,6 +182,16 @@ class Connection:
         if logTypeID:
             sql += f"""WHERE "logTypeID" = {logTypeID}"""    
         sql += f"""ORDER BY "logTypeID" ASC"""                  
+        return self.execute(sql)
+
+    def getLogs(self, logID = None):
+        """ Get all or one log incident. """
+        sql = f"""SELECT "logID", "incident", "incidentDate", "logType"
+                  FROM "Log"
+                  INNER JOIN "LogType" ON "Log"."logTypeID" = "LogType"."logTypeID" """
+        if logID:
+            sql += f"""WHERE "logID" = {logID}"""    
+        sql += f"""ORDER BY "logID" ASC"""                 
         return self.execute(sql)
 
     # ---------------------------------- UPDATE ---------------------------------- #
@@ -331,7 +347,7 @@ class Connection:
                 WHERE "logTypeID" = {logTypeID}"""                
         return self.execute(sql, commit=True)
 
-    def deleteLog(self, ID, what = "artefactID"):
+    def deleteLog(self, ID, what = "logID"):
         """ Delete Log. """
         sql = f"""DELETE FROM "Log"
                 WHERE "{what}" = {ID}"""         

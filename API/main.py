@@ -83,6 +83,12 @@ class Archaeologygallery:
         Conn().insertLogType(lType.logType)
         return {'message': 'Log type has been created'}
 
+    @api.post("/log", status_code=201, summary="Create new log incident.")
+    async def addLogType(log: Log, response: Response, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpoint for creating a new log. """
+        Conn().insertLog(log.incident, log.incidentDate, log.logTypeID)
+        return {'message': 'Log incident has been created'}
+
     # --------------------------------------- READ --------------------------------------- #
 
     @api.get("/employeeType", summary="Get all or one employee type.")
@@ -270,6 +276,29 @@ class Archaeologygallery:
             i += 1
         return {title: result}
 
+    @api.get("/log", summary="Get all or one log indicent.")
+    async def getLog(logID: int = None, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for getting all log types or one specific log type. """
+        # If the logID isn't none.
+        result = []
+        if logID:
+            title = "Log_incident"
+            logs = Conn().getLogs(logID)
+        else:
+            title = "Log_incidents"
+            logs = Conn().getLogs()
+        i = 0
+        while i < len(logs):
+            temp = {}
+            temp['ID'] = logs[i][0]
+            temp['Incident'] = logs[i][1]
+            temp['IncidentDate'] = logs[i][2]
+            temp['Type'] = logs[i][3]
+
+            result.append(temp)
+            i += 1
+        return {title: result}
+
     # -------------------------------------- UPDATE -------------------------------------- #
 
     @api.patch("/employeeType", summary="Update employee type")
@@ -430,9 +459,15 @@ class Archaeologygallery:
         return {"message": "Deleted artefact"}
 
     @api.delete("/logType", summary="Delete log type")
-    async def deleteArtefactType(logTypeID: int, token: Token = Depends(Authorize().validateJWT)):
+    async def deleteLogType(logTypeID: int, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for deleting log type. """
         Conn().deleteLogType(logTypeID)
         return {"message": "Deleted logType"}
+
+    @api.delete("/log", summary="Delete log")
+    async def deleteLog(logID: int, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for deleting log. """
+        Conn().deleteLog(logID)
+        return {"message": "Deleted log"}
 
 uvicorn.run(Archaeologygallery().api, host='0.0.0.0', port=8000)
