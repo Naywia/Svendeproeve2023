@@ -90,7 +90,7 @@ class Archaeologygallery:
         return {'message': 'Controller has been created'}
 
     @api.post("/log", status_code=201, summary="Create new log incident.")
-    async def addLogType(log: Log, response: Response, token: Token = Depends(Authorize().validateJWT)):
+    async def addLog(log: Log, response: Response, token: Token = Depends(Authorize().validateJWT)):
         """ Endpoint for creating a new log. """
         Conn().insertLog(log.incident, log.incidentDate, log.logTypeID)
         return {'message': 'Log incident has been created'}
