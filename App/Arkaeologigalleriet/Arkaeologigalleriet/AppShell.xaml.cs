@@ -13,6 +13,7 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute(nameof(EmployeeView), typeof(EmployeeView));
 		Routing.RegisterRoute(nameof(SearchView), typeof(SearchView));
 		Routing.RegisterRoute(nameof(ScanQRView), typeof(ScanQRView));
+		Routing.RegisterRoute(nameof(ArtifactInformationView), typeof(ArtifactInformationView));
 	}
 
     private async void LogOutBtn(object sender, EventArgs e)

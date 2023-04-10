@@ -5,19 +5,20 @@ namespace Arkaeologigalleriet.Views;
 
 public partial class ScanQRView : ContentPage
 {
+    int scannedeID;
 	public ScanQRView(ScanQRViewModel vm)
 	{
 		InitializeComponent();
 		BindingContext = vm;
 	}
 
-    private void TestQr(object sender, ZXing.Net.Maui.BarcodeDetectionEventArgs e)
+    private async void TestQr(object sender, ZXing.Net.Maui.BarcodeDetectionEventArgs e)
     {
-		Dispatcher.Dispatch(() =>
+		if (!string.IsNullOrEmpty(e.Results[0].Value))
 		{
-			QRLabel.Text = e.Results[0].Value;
-
-
-        });
+            scannedeID = Convert.ToInt32(e.Results[0].Value);
+        }
     }
+
+    
 }
