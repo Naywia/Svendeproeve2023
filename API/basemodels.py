@@ -80,5 +80,15 @@ class Log(BaseModel):
     incident: str
     incidentDate: str
     logTypeID: int
+    controllerID: int
 
+class Controller(BaseModel):
+    """ Request body when adding a controller. """
+    controller: str
+    storageID: int
+
+class UpdateController(BaseModel):
+    """ Request body when updating a controller. """
+    controller: str = None
+    storageID: int = None
 

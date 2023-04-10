@@ -83,6 +83,12 @@ class Archaeologygallery:
         Conn().insertLogType(lType.logType)
         return {'message': 'Log type has been created'}
 
+    @api.post("/controller", status_code=201, summary="Create new controller.")
+    async def addController(cntr: Controller, response: Response, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpoint for creating a new log. """
+        Conn().insertController(cntr.controller, cntr.storageID)
+        return {'message': 'Controller has been created'}
+
     @api.post("/log", status_code=201, summary="Create new log incident.")
     async def addLogType(log: Log, response: Response, token: Token = Depends(Authorize().validateJWT)):
         """ Endpoint for creating a new log. """
@@ -276,6 +282,28 @@ class Archaeologygallery:
             i += 1
         return {title: result}
 
+    @api.get("/controller", summary="Get all or one controller.")
+    async def getController(controllerID: int = None, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for getting all controllers or one specific controller. """
+        # If the controllerID isn't none.
+        result = []
+        if controllerID:
+            title = "Controller"
+            cntrs = Conn().getControllers(controllerID)
+        else:
+            title = "Controllers"
+            cntrs = Conn().getControllers()
+        i = 0
+        while i < len(cntrs):
+            temp = {}
+            temp['ID'] = cntrs[i][0]
+            temp['Controller'] = cntrs[i][1]
+            temp['Storage'] = cntrs[i][2]
+
+            result.append(temp)
+            i += 1
+        return {title: result}
+
     @api.get("/log", summary="Get all or one log indicent.")
     async def getLog(logID: int = None, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for getting all log types or one specific log type. """
@@ -420,6 +448,25 @@ class Archaeologygallery:
         result = Conn().updateLogType(logTypeID, lType.logType)
         return {'message': result}
 
+    @api.patch("/controller", summary="Update controller")
+    async def updateController(controllerID: int, cntr: UpdateController, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for updating a controller. """
+        columsToUpdate = []
+        values = []
+    
+        # If values isn't none add them to list.
+        if cntr.controller:
+            columsToUpdate.append("controller")
+            values.append(cntr.controller)
+        if cntr.storage:
+            columsToUpdate.append("storage")
+            values.append(cntr.storage)
+
+        result = Conn().updateController(controllerID, columsToUpdate, values)
+        if result == "Something went wrong":
+            response.status_code = status.HTTP_400_BAD_REQUEST
+        return {"message": result}
+
     # -------------------------------------- DELETE -------------------------------------- #
     
     @api.delete("/employeeType", summary="Delete employee type")
@@ -463,6 +510,12 @@ class Archaeologygallery:
         """ Endpont for deleting log type. """
         Conn().deleteLogType(logTypeID)
         return {"message": "Deleted logType"}
+
+    @api.delete("/controller", summary="Delete controller")
+    async def deleteController(controllerID: int, token: Token = Depends(Authorize().validateJWT)):
+        """ Endpont for deleting controller. """
+        Conn().deleteController(controllerID)
+        return {"message": "Deleted controller"}
 
     @api.delete("/log", summary="Delete log")
     async def deleteLog(logID: int, token: Token = Depends(Authorize().validateJWT)):

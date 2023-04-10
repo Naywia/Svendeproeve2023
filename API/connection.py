@@ -84,10 +84,16 @@ class Connection:
                 VALUES ('{logType}')"""
         self.execute(sql, commit=True)
 
+    def insertController(self, controller, storageID):
+        """ Insert a controller into the database. """
+        sql = f"""INSERT INTO "Controller" ("controller", "storageID")
+                VALUES ('{controller}', '{storageID}'"""
+        self.execute(sql, commit=True)
+
     def insertLog(self, incident, incidentDate, logTypeID):
         """ Insert a log incident into the database. """
-        sql = f"""INSERT INTO "Log" ("incident", "incidentDate", "logTypeID")
-                VALUES ('{incident}', '{incidentDate}', {logTypeID})"""
+        sql = f"""INSERT INTO "Log" ("incident", "incidentDate", "logTypeID", "controllerID")
+                VALUES ('{incident}', '{incidentDate}', {logTypeID}, {controllerID})"""
         self.execute(sql, commit=True)
 
     # ----------------------------------- READ ----------------------------------- #
@@ -184,11 +190,22 @@ class Connection:
         sql += f"""ORDER BY "logTypeID" ASC"""                  
         return self.execute(sql)
 
+    def getControllers(self, controllerID = None):
+        """ Get all or one Controller. """
+        sql = f"""SELECT "controllerID", "controller", "storageName"
+                  FROM "Controller"
+                  INNER JOIN "Storage" ON "Controller"."storageID" = "Storage"."storageID" """
+        if logID:
+            sql += f"""WHERE "controllerID" = {controllerID}"""    
+        sql += f"""ORDER BY "controllerID" ASC"""                 
+        return self.execute(sql)
+
     def getLogs(self, logID = None):
         """ Get all or one log incident. """
-        sql = f"""SELECT "logID", "incident", "incidentDate", "logType"
+        sql = f"""SELECT "logID", "incident", "incidentDate", "logType", "controller"
                   FROM "Log"
-                  INNER JOIN "LogType" ON "Log"."logTypeID" = "LogType"."logTypeID" """
+                  INNER JOIN "LogType" ON "Log"."logTypeID" = "LogType"."logTypeID"
+                  INNER JOIN "Controller" ON "Log"."controllerID" = "Controller"."controllerID" """
         if logID:
             sql += f"""WHERE "logID" = {logID}"""    
         sql += f"""ORDER BY "logID" ASC"""                 
@@ -293,6 +310,24 @@ class Connection:
         self.execute(sql, commit=True)
         return "Artefact type has been updated"
 
+    def updateController(self, controllerID, columsToUpdate: list, values: list):
+        """ Update controller. """
+
+        if (len(columsToUpdate) == len(values)) and len(values) != 0:
+            sql = f"""UPDATE "Controller" SET """
+            i = 0
+            while i < len(columsToUpdate):
+                if type(values[i]) != int:
+                    values[i] = "'" + values[i] + "'"
+                if i == len(columsToUpdate) - 1:
+                    sql += f"\"{columsToUpdate[i]}\" = {values[i]} "
+                else:
+                    sql += f"\"{columsToUpdate[i]}\" = {values[i]}, "
+                i += 1
+            sql += f"""WHERE "controllerID" = {controllerID}"""
+            self.execute(sql, commit=True)
+            return "Controller has been updated"
+        return "Something went wrong"
     # ---------------------------------- DELETE ---------------------------------- #
     
     def deleteEmployeeType(self, employeeTypeID):
@@ -345,6 +380,13 @@ class Connection:
         self.deleteLog(logTypeID, what="logTypeID")
         sql = f"""DELETE FROM "LogType"
                 WHERE "logTypeID" = {logTypeID}"""                
+        return self.execute(sql, commit=True)
+
+    def deleteController(self, controllerID):
+        """ Delete controller. """
+        self.deleteLog(controllerID, what="controllerID")
+        sql = f"""DELETE FROM "Controller"
+                WHERE "controllerID" = {controllerID}"""                
         return self.execute(sql, commit=True)
 
     def deleteLog(self, ID, what = "logID"):
