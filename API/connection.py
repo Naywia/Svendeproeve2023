@@ -78,16 +78,16 @@ class Connection:
             VALUES ('{artefact}', '{artefactDescription}', {artefactTypeID}, {placementID});"""
         self.execute(sql, commit=True)
 
-    def insertLogType(self, logType):
-        """ Insert a log type into the database. """
-        sql = f"""INSERT INTO "LogType" ("logType")
-                VALUES ('{logType}')"""
-        self.execute(sql, commit=True)
-
     def insertController(self, controller, storageID):
         """ Insert a controller into the database. """
         sql = f"""INSERT INTO "Controller" ("controller", "storageID")
                 VALUES ('{controller}', '{storageID}')"""
+        self.execute(sql, commit=True)
+
+    def insertLogType(self, logType):
+        """ Insert a log type into the database. """
+        sql = f"""INSERT INTO "LogType" ("logType")
+                VALUES ('{logType}')"""
         self.execute(sql, commit=True)
 
     def insertLog(self, incident, incidentDate, logTypeID):
@@ -181,15 +181,6 @@ class Connection:
         sql += f"""ORDER BY "artefactID" ASC"""                 
         return self.execute(sql)
 
-    def getLogTypes(self, logTypeID = None):
-        """ Get all or one log type. """
-        sql = f"""SELECT "logTypeID", "logType"
-                  FROM "LogType" """
-        if logTypeID:
-            sql += f"""WHERE "logTypeID" = {logTypeID}"""    
-        sql += f"""ORDER BY "logTypeID" ASC"""                  
-        return self.execute(sql)
-
     def getControllers(self, controllerID = None):
         """ Get all or one Controller. """
         sql = f"""SELECT "controllerID", "controller", "storageName"
@@ -198,6 +189,15 @@ class Connection:
         if controllerID:
             sql += f"""WHERE "controllerID" = {controllerID}"""    
         sql += f"""ORDER BY "controllerID" ASC"""                 
+        return self.execute(sql)
+
+    def getLogTypes(self, logTypeID = None):
+        """ Get all or one log type. """
+        sql = f"""SELECT "logTypeID", "logType"
+                  FROM "LogType" """
+        if logTypeID:
+            sql += f"""WHERE "logTypeID" = {logTypeID}"""    
+        sql += f"""ORDER BY "logTypeID" ASC"""                  
         return self.execute(sql)
 
     def getLogs(self, logID = None):
@@ -302,14 +302,6 @@ class Connection:
             return "Artefact has been updated"
         return "Something went wrong"
 
-    def updateLogType(self, logTypeID, logType):
-        """ Update log type. """
-        sql = f"""UPDATE "LogType"
-                SET "logType" = '{logType}'
-                WHERE "logTypeID" = {logTypeID};"""
-        self.execute(sql, commit=True)
-        return "Artefact type has been updated"
-
     def updateController(self, controllerID, columsToUpdate: list, values: list):
         """ Update controller. """
 
@@ -328,7 +320,15 @@ class Connection:
             self.execute(sql, commit=True)
             return "Controller has been updated"
         return "Something went wrong"
-    
+
+    def updateLogType(self, logTypeID, logType):
+        """ Update log type. """
+        sql = f"""UPDATE "LogType"
+                SET "logType" = '{logType}'
+                WHERE "logTypeID" = {logTypeID};"""
+        self.execute(sql, commit=True)
+        return "Artefact type has been updated"
+
     # ---------------------------------- DELETE ---------------------------------- #
     
     def deleteEmployeeType(self, employeeTypeID):
@@ -376,18 +376,18 @@ class Connection:
                 WHERE "{what}" = {ID}"""         
         return self.execute(sql, commit=True)
 
-    def deleteLogType(self, logTypeID):
-        """ Delete logType. """
-        self.deleteLog(logTypeID, what="logTypeID")
-        sql = f"""DELETE FROM "LogType"
-                WHERE "logTypeID" = {logTypeID}"""                
-        return self.execute(sql, commit=True)
-
     def deleteController(self, controllerID):
         """ Delete controller. """
         self.deleteLog(controllerID, what="controllerID")
         sql = f"""DELETE FROM "Controller"
                 WHERE "controllerID" = {controllerID}"""                
+        return self.execute(sql, commit=True)
+
+    def deleteLogType(self, logTypeID):
+        """ Delete logType. """
+        self.deleteLog(logTypeID, what="logTypeID")
+        sql = f"""DELETE FROM "LogType"
+                WHERE "logTypeID" = {logTypeID}"""                
         return self.execute(sql, commit=True)
 
     def deleteLog(self, ID, what = "logID"):
