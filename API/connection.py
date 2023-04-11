@@ -87,7 +87,7 @@ class Connection:
     def insertController(self, controller, storageID):
         """ Insert a controller into the database. """
         sql = f"""INSERT INTO "Controller" ("controller", "storageID")
-                VALUES ('{controller}', '{storageID}'"""
+                VALUES ('{controller}', '{storageID}')"""
         self.execute(sql, commit=True)
 
     def insertLog(self, incident, incidentDate, logTypeID):
@@ -195,7 +195,7 @@ class Connection:
         sql = f"""SELECT "controllerID", "controller", "storageName"
                   FROM "Controller"
                   INNER JOIN "Storage" ON "Controller"."storageID" = "Storage"."storageID" """
-        if logID:
+        if controllerID:
             sql += f"""WHERE "controllerID" = {controllerID}"""    
         sql += f"""ORDER BY "controllerID" ASC"""                 
         return self.execute(sql)
@@ -328,6 +328,7 @@ class Connection:
             self.execute(sql, commit=True)
             return "Controller has been updated"
         return "Something went wrong"
+    
     # ---------------------------------- DELETE ---------------------------------- #
     
     def deleteEmployeeType(self, employeeTypeID):

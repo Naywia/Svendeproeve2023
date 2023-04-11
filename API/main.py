@@ -490,9 +490,9 @@ class Archaeologygallery:
         if cntr.controller:
             columsToUpdate.append("controller")
             values.append(cntr.controller)
-        if cntr.storage:
-            columsToUpdate.append("storage")
-            values.append(cntr.storage)
+        if cntr.storageID:
+            columsToUpdate.append("storageID")
+            values.append(cntr.storageID)
 
         result = Conn().updateController(controllerID, columsToUpdate, values)
         if result == "Something went wrong":
