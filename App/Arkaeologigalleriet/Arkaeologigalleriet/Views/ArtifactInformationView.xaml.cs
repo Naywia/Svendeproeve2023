@@ -8,14 +8,13 @@ public partial class ArtifactInformationView : ContentPage
 
     public ArtifactInformationView(ArtifactInformationViewModel vm)
 	{
-		InitializeComponent();       
-        LoadArtecaftInfo();
+		InitializeComponent(); 
+        BindingContext = vm;
         _vm = vm;
-        BindingContext = vm;        
     }
-
-	async void LoadArtecaftInfo()
-	{
-        await _vm.GetArtifact();
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+        _vm.GetArtifact();
     }
 }

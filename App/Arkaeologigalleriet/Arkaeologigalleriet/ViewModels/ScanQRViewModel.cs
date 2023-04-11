@@ -11,8 +11,9 @@ namespace Arkaeologigalleriet.ViewModels
 {
     public partial class ScanQRViewModel : ObservableObject
     {
-        int id = 1;
+        [ObservableProperty]
+        int id;
         [RelayCommand]
-        Task Navigate() => Shell.Current.GoToAsync($"{nameof(ArtifactInformationView)}?ID={id}");
+        Task Navigate() => Shell.Current.GoToAsync($"{nameof(ArtifactInformationView)}?ID={Id}");
     }
 }

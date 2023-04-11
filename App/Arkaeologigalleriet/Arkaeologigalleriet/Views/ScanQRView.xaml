@@ -22,12 +22,12 @@
             VerticalOptions="Center"
             HorizontalOptions="Center" 
             Margin="0,10,0,100"
-            BarcodesDetected="TestQr"
+            BarcodesDetected="TestQr" 
+            x:Name="barcodeReader"            
             />
 
-        <Label x:Name="QRLabel"/>
 
-        <Button Text="Scan" Margin="10" WidthRequest="250" Command="{Binding NavigateCommand}"/>
+        <Button Text="Scan" Margin="10" WidthRequest="250" Clicked="AtivateScanBtn"/>
         <Button Text="Annuller" Margin="10" WidthRequest="250"/>
     </VerticalStackLayout>
 </ContentPage>

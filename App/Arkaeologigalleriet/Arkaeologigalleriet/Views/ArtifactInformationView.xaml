@@ -25,15 +25,16 @@
                 CornerRadius="5"
                 Padding="8">
             <StackLayout>
-                <Label Text="{Binding ArtifactInformationModel.Name}"
+                <Label Text="{Binding Name}"
                     FontSize="14"
-                    FontAttributes="Bold"/>
+                    FontAttributes="Bold" TextColor="Black"/>
                 <BoxView Color="Gray"
                     HeightRequest="2"
                     HorizontalOptions="Fill" />
                 <ScrollView>
-                    <Label Text="{Binding ArtifactInformationModel.Description}"/>
+                    <Label Text="{Binding Dec}" TextColor="Black"/>
                 </ScrollView>
+                <Label Text="{Binding ArtifactID}" TextColor="Red"/>
             </StackLayout>
         </Frame>
 
