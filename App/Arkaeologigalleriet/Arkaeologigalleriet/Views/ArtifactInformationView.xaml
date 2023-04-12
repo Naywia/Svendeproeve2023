@@ -34,10 +34,9 @@
                 <ScrollView>
                     <Label Text="{Binding Dec}" TextColor="Black"/>
                 </ScrollView>
-                <Label Text="{Binding ArtifactID}" TextColor="Red"/>
             </StackLayout>
         </Frame>
-
+        <Button Command="{Binding SpeakNowCommand}" Text="Få læst op"/>
 
     </VerticalStackLayout>
 </ContentPage>

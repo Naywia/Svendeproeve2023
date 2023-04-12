@@ -5,6 +5,7 @@ namespace Arkaeologigalleriet.Views;
 public partial class ArtifactInformationView : ContentPage
 {
     private readonly ArtifactInformationViewModel _vm;
+    
 
     public ArtifactInformationView(ArtifactInformationViewModel vm)
 	{
@@ -12,9 +13,11 @@ public partial class ArtifactInformationView : ContentPage
         BindingContext = vm;
         _vm = vm;
     }
-    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    protected async override void OnNavigatedTo(NavigatedToEventArgs args)
     {
         base.OnNavigatedTo(args);
-        _vm.GetArtifact();
+        await _vm.GetArtifact();
+        _vm.addLangList();
+
     }
 }

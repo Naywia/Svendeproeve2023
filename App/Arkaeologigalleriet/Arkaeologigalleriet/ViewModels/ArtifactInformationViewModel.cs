@@ -1,6 +1,9 @@
 ﻿using Arkaeologigalleriet.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Maui.Media;
 using Newtonsoft.Json;
+using System.Diagnostics;
 using System.Net.Http.Headers;
 
 namespace Arkaeologigalleriet.ViewModels
@@ -8,6 +11,9 @@ namespace Arkaeologigalleriet.ViewModels
     [QueryProperty(nameof(ArtifactID), nameof(ArtifactID))]
     public partial class ArtifactInformationViewModel : ObservableObject
     {
+        #region Propyties
+
+        
         HttpClient _client;
         string _url = "http://192.168.1.100:8000/";
 
@@ -23,12 +29,20 @@ namespace Arkaeologigalleriet.ViewModels
         [ObservableProperty]
         string _dec;
 
+        CancellationTokenSource _cts;
+
+    
+
+        #endregion
+
         public ArtifactInformationViewModel()
         {
         }
 
-        
 
+        #region ApiCall
+
+        
         public async Task<Artefact> GetArtifact()
         {
             ArtifactModel = new Artefact();
@@ -40,18 +54,18 @@ namespace Arkaeologigalleriet.ViewModels
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await SecureStorage.Default.GetAsync("JWT"));
                 HttpResponseMessage response = await _client.SendAsync(request);
                 if (response.IsSuccessStatusCode)
-                {                    
+                {
                     string payload = await response.Content.ReadAsStringAsync();
                     try
                     {
-                        
+
                         var jsonModel = JsonConvert.DeserializeObject<ArtifactInformationModel>(payload);
                         foreach (var item in jsonModel.Artefact)
                         {
                             Name = item.Name;
                             Dec = item.Description;
                         }
-                        
+
                     }
                     catch (Exception ex)
                     {
@@ -68,9 +82,40 @@ namespace Arkaeologigalleriet.ViewModels
             }
 
             return null;
-            
+
+        }
+        #endregion
+        [RelayCommand]
+        public async Task SpeakNowAsync()
+        {
+            _cts = new CancellationTokenSource();
+
+            IEnumerable<Locale> locales = await TextToSpeech.GetLocalesAsync();
+
+            foreach (Locale locale in locales)
+            {
+                await Console.Out.WriteLineAsync(locale.Language);
+            }
+
+
+            SpeechOptions options = new SpeechOptions()
+            {
+                Pitch = 1.5f,   // 0.0 - 2.0
+                Volume = 0.75f, // 0.0 - 1.0
+            };
+
+            await TextToSpeech.Default.SpeakAsync(Dec, options, cancelToken: _cts.Token);
+
+           
         }
 
         
+        public void CancelSpeech()
+        {
+            if (_cts?.IsCancellationRequested ?? true)
+                return;
+
+            _cts.Cancel();
+        }
     }
 }
