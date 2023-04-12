@@ -17,7 +17,6 @@ public partial class ArtifactInformationView : ContentPage
     {
         base.OnNavigatedTo(args);
         await _vm.GetArtifact();
-        _vm.addLangList();
 
     }
 }

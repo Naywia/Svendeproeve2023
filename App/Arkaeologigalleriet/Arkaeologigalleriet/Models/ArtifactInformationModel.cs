@@ -12,6 +12,12 @@ namespace Arkaeologigalleriet.Models
     {
         public List<Artefact> Artefact { get; set; }
     }
+
+    public class ArtifactInformationModels
+    {
+        public List<Artefact> Artefacts { get; set; }
+    }
+
     public class Artefact
     {
         public int ID { get; set; }
