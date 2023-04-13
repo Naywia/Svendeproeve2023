@@ -33,7 +33,7 @@
                 </SearchBar.Behaviors>
             </SearchBar>
 
-            <ListView Grid.Row="3" ItemsSource="{Binding Artefacts}" SelectionMode="Single" HeightRequest="300">
+            <ListView Grid.Row="3" ItemsSource="{Binding Artefacts}" SelectionMode="Single">
                 <ListView.Behaviors>
                     <toolkit:EventToCommandBehavior
                         EventName="ItemTapped"
@@ -53,8 +53,8 @@
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Column="1" TextColor="Black" Text="{Binding Name}" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalTextAlignment="Center" Margin="0,0,10,0"/>
-                                <Label Grid.Column="2" TextColor="Black" Text="{Binding ArtefactType}" VerticalTextAlignment="Center" VerticalOptions="End" HorizontalTextAlignment="Center"/>
+                                <Label Grid.Column="1" TextColor="Black" Text="{Binding Name}" FontAttributes="Bold" HorizontalTextAlignment="Start" Margin="0,0,10,0"/>
+                                <Label Grid.Column="2" TextColor="Black" Text="{Binding ArtefactType}" HorizontalTextAlignment="End"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
