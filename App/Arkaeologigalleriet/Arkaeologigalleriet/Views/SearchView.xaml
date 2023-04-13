@@ -20,7 +20,7 @@
             
             <SearchBar Grid.Row="1"/>
 
-            <ListView Grid.Row="3" ItemsSource="{Binding Artefacts}" SelectionMode="Single" SelectedItem="{Binding Artefacts}">
+            <ListView Grid.Row="3" ItemsSource="{Binding Artefacts}" SelectionMode="Single" ItemTapped="TappedItem">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

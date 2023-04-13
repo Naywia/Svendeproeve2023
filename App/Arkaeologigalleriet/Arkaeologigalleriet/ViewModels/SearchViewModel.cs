@@ -99,7 +99,7 @@ namespace Arkaeologigalleriet.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        [RelayCommand]
+        
         public void Test(Artefact artefact)
         {
             var Test = artefact;
