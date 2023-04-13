@@ -49,7 +49,7 @@ class Archaeologygallery:
     # Make variable for the api.
     api = FastAPI()
 
-    app.add_middleware(
+    api.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
         allow_credentials=True,
