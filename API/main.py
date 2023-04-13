@@ -5,6 +5,7 @@ import uvicorn
 from fastapi import Depends, FastAPI, HTTPException, Response, status
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.middleware.cors import CORSMiddleware
 
 import paho.mqtt.client as mqtt #import the client
 import json
@@ -46,21 +47,29 @@ class Mosquitto:
 # API
 class Archaeologygallery:
     # Make variable for the api.
-    api = FastAPI() 
+    api = FastAPI()
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
     # Get access token.
     @api.post("/login", summary="Login")
     async def login(form_data: OAuth2PasswordRequestForm = Depends()):
         """ Login endpoint. """
         # Expire JWT after 15 minutes.
-        ACCESS_TOKEN_EXPIRE_MINUTES = 15
+        ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
         user = Authorize().authenticateUser(form_data.username, form_data.password)
         if not user:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Incorrect username or password",
-                content={"Message": "Incorrect username or password."},
+                #content={"Message": "Incorrect username or password."},
                 headers={"WWW-Authenticate": "Bearer"},
             )
         access_token_expires = datetime.timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
