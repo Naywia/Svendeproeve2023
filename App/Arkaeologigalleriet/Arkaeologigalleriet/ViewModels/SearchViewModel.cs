@@ -1,5 +1,7 @@
 ﻿using Arkaeologigalleriet.Models;
+using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
@@ -25,9 +27,9 @@ namespace Arkaeologigalleriet.ViewModels
             }
         }
 
-        private List<Artefact> _artefacts;
+        private ObservableCollection<Artefact> _artefacts;
 
-        public List<Artefact> Artefacts
+        public ObservableCollection<Artefact> Artefacts
         {
             get { return _artefacts; }
             set
@@ -52,10 +54,10 @@ namespace Arkaeologigalleriet.ViewModels
         public async void GetAllArtefacts()
         {
             Models = new List<ArtifactInformationModels>();
-            Artefacts = new List<Artefact>();
+            Artefacts = new ObservableCollection<Artefact>();
             _client = new HttpClient();
 
-
+            
 
             try
             {
@@ -70,9 +72,8 @@ namespace Arkaeologigalleriet.ViewModels
                         var jsonmodel = JsonConvert.DeserializeObject<ArtifactInformationModels>(payload);
                         Models.Add(jsonmodel);
                         foreach (var item in jsonmodel.Artefacts)
-                        {
-                            var test = new Artefact { ID = item.ID, Name = item.Name, ArtefactType = item.ArtefactType, Description = item.Description, Row = item.Row, Shelf = item.Shelf, Storage = item.Storage };
-                            Artefacts.Add(test);
+                        {                            
+                            Artefacts.Add(item);
                         }
 
 
@@ -96,6 +97,13 @@ namespace Arkaeologigalleriet.ViewModels
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        [RelayCommand]
+        public void Test(Artefact artefact)
+        {
+            var Test = artefact;
+            string testy = Test.ID.ToString();
         }
     }
 }

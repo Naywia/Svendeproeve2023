@@ -20,30 +20,7 @@
             
             <SearchBar Grid.Row="1"/>
 
-            <!--<Grid Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <RadioButton Grid.Column="1" Grid.Row="1" GroupName="WareHouseStatus"/>
-                <RadioButton Grid.Column="2" Grid.Row="1" GroupName="WareHouseStatus"/>
-                <RadioButton Grid.Column="3" Grid.Row="1" GroupName="WareHouseStatus"/>
-                <Label Text="På lager" Grid.Column="1" Grid.Row="2" Margin="0,0,10,0"/>
-                <Label Text="Udstilling" Grid.Column="2" Grid.Row="2" Margin="0,0,10,0"/>
-                <Label Text="Udlånt" Grid.Column="3" Grid.Row="2" Margin="0,0,10,0"/>
-            </Grid>-->
-
-            <ListView Grid.Row="3" ItemsSource="{Binding Artefacts}" SelectionMode="Single">
+            <ListView Grid.Row="3" ItemsSource="{Binding Artefacts}" SelectionMode="Single" SelectedItem="{Binding Artefacts}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -57,9 +34,8 @@
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Column="1" TextColor="Black" Text="{Binding Name}" VerticalTextAlignment="Center" VerticalOptions="Center"/>
-                                <Label Grid.Column="2" TextColor="Black" Text="{Binding ArtefactType}" VerticalTextAlignment="Center" VerticalOptions="End"/>
-                                <Label Grid.Column="3" Text="TEEEEST" TextColor="Black"/>
+                                <Label Grid.Column="1" TextColor="Black" Text="{Binding Name}" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalTextAlignment="Center" Margin="0,0,10,0"/>
+                                <Label Grid.Column="2" TextColor="Black" Text="{Binding ArtefactType}" VerticalTextAlignment="Center" VerticalOptions="End" HorizontalTextAlignment="Center"/>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
