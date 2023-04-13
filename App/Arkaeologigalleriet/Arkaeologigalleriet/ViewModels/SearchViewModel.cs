@@ -1,5 +1,6 @@
 ﻿using Arkaeologigalleriet.Models;
 using Arkaeologigalleriet.Views;
+using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
@@ -40,7 +41,7 @@ namespace Arkaeologigalleriet.ViewModels
             }
         }
 
-
+        private List<Artefact> _savedList;
         #endregion
 
 
@@ -56,6 +57,7 @@ namespace Arkaeologigalleriet.ViewModels
         {
             Models = new List<ArtifactInformationModels>();
             Artefacts = new ObservableCollection<Artefact>();
+            _savedList = new List<Artefact>();
             _client = new HttpClient();
 
             
@@ -75,6 +77,7 @@ namespace Arkaeologigalleriet.ViewModels
                         foreach (var item in jsonmodel.Artefacts)
                         {                            
                             Artefacts.Add(item);
+                            _savedList.Add(item);
                         }
 
 
@@ -101,10 +104,39 @@ namespace Arkaeologigalleriet.ViewModels
         }
 
         [RelayCommand]
-        public async void Test(object item)
+        public async void Tapped(object item)
         {
             var id = (item as Artefact).ID;
             await Shell.Current.GoToAsync($"{nameof(ArtifactInformationView)}?ArtifactID={id}");
+        }
+
+        [RelayCommand]
+        public async void FilterSearch(object keyword)
+        {
+            try
+            {
+                var input = (keyword as string);
+                if (!string.IsNullOrEmpty(input))
+                {
+                    Artefacts.Clear();
+                    var data = _savedList.Where(i => i.Name.ToLower().Contains(input.ToLower())).ToList();
+                    
+                    foreach (var item in data)
+                    {
+                        Artefacts.Add(item);
+                    }
+                }
+                else
+                {
+                    Artefacts = _savedList.ToObservableCollection();
+                }
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+               
+            }
+            
         }
     }
 }
