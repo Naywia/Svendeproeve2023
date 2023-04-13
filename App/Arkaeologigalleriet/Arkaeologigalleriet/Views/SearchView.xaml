@@ -2,12 +2,18 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Arkaeologigalleriet.Views.SearchView"
-             xmlns:local="clr-namespace:Arkaeologigalleriet.Views"
+             xmlns:local="clr-namespace:Arkaeologigalleriet.Views"             
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:Viewmodel="clr-namespace:Arkaeologigalleriet.ViewModels"
              Title="Søg">
     <ContentPage.BindingContext>
         <Viewmodel:SearchViewModel />
     </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <VerticalStackLayout>
         <Grid>
             <Grid.RowDefinitions>
@@ -20,7 +26,13 @@
             
             <SearchBar Grid.Row="1"/>
 
-            <ListView Grid.Row="3" ItemsSource="{Binding Artefacts}" SelectionMode="Single" ItemTapped="TappedItem">
+            <ListView Grid.Row="3" ItemsSource="{Binding Artefacts}" SelectionMode="Single">
+                <ListView.Behaviors>
+                    <toolkit:EventToCommandBehavior
+                        EventName="ItemTapped"
+                        Command="{Binding TestCommand}"
+                        EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}"/>
+                </ListView.Behaviors>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

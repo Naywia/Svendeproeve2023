@@ -1,4 +1,5 @@
 ﻿using Arkaeologigalleriet.Models;
+using Arkaeologigalleriet.Views;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
@@ -99,11 +100,11 @@ namespace Arkaeologigalleriet.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        
-        public void Test(Artefact artefact)
+        [RelayCommand]
+        public async void Test(object item)
         {
-            var Test = artefact;
-            string testy = Test.ID.ToString();
+            var id = (item as Artefact).ID;
+            await Shell.Current.GoToAsync($"{nameof(ArtifactInformationView)}?ArtifactID={id}");
         }
     }
 }

@@ -18,10 +18,5 @@ public partial class SearchView : ContentPage
         base.OnNavigatedTo(args);
         _vm.GetAllArtefacts();
     }
-
-    private async void TappedItem(object sender, ItemTappedEventArgs e)
-    {
-        var id = (e.Item as Artefact).ID;
-        await Shell.Current.GoToAsync($"{nameof(ArtifactInformationView)}?ArtifactID={id}");
-    }
+   
 }
