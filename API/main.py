@@ -29,6 +29,7 @@ class Mosquitto:
 
         # Subscribing in on_connect() means that if the connection is lost and reconnected, then subscriptions will be renewed.
         client.subscribe("security")
+        client.subscribe("setup")
 
     # The callback for when a PUBLISH message is received from the server.
     def on_message(self, client, userdata, msg):
@@ -37,9 +38,11 @@ class Mosquitto:
         if "{" in payload:
             data = json.loads(payload)
 
-            print(payload + " received on topic[" + msg.topic + "]")
-
-            Conn().insertLog(data["incident"], data["incidentDate"], data["logTypeID"], data["controllerID"])
+            #print(payload + " received on topic[" + msg.topic + "]")
+            if msg.topic is "setup":
+                pass
+            elif msg.topic is "security":
+                Conn().insertLog(data["incident"], data["incidentDate"], data["logTypeID"], data["controllerID"])
 
         else:
             print(payload)
