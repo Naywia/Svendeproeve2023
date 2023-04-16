@@ -4,9 +4,18 @@ namespace Arkaeologigalleriet.Views;
 
 public partial class UpdateStatusView : ContentPage
 {
-	public UpdateStatusView(UpdateStatusViewModel vm)
+    private readonly UpdateStatusViewModel _vm;
+
+    public UpdateStatusView(UpdateStatusViewModel vm)
 	{
 		InitializeComponent();
 		BindingContext = vm;
-	}
+        _vm = vm;
+    }
+
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+        _vm.GetArtefact();
+    }
 }

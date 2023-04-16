@@ -1,4 +1,5 @@
 ﻿using Arkaeologigalleriet.Models;
+using Arkaeologigalleriet.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.Media;
@@ -15,7 +16,8 @@ namespace Arkaeologigalleriet.ViewModels
 
         
         HttpClient _client;
-        string _url = "http://192.168.1.100:8000/";
+        //string _url = "http://192.168.1.100:8000/";
+        string _url = "http://164.68.113.72:8000/";
 
         [ObservableProperty]
         Artefact _artifactModel;
@@ -85,6 +87,7 @@ namespace Arkaeologigalleriet.ViewModels
 
         }
         #endregion
+
         [RelayCommand]
         public async Task SpeakNowAsync()
         {
@@ -116,6 +119,12 @@ namespace Arkaeologigalleriet.ViewModels
                 return;
 
             _cts.Cancel();
+        }
+
+        [RelayCommand]
+        public async void NavigateToUpdate()
+        {
+            await Shell.Current.GoToAsync($"{nameof(UpdateStatusView)}?ArtifactID={ArtifactID}");
         }
     }
 }

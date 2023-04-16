@@ -37,6 +37,7 @@
             </StackLayout>
         </Frame>
         <Button Command="{Binding SpeakNowCommand}" Text="Få læst op"/>
+        <Button Command="{Binding NavigateToUpdateCommand}" Text="Update"/>
 
     </VerticalStackLayout>
 </ContentPage>

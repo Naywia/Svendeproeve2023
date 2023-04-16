@@ -10,12 +10,17 @@ using System.Runtime.CompilerServices;
 
 namespace Arkaeologigalleriet.ViewModels
 {
+    
     public partial class SearchViewModel : INotifyPropertyChanged
     {
         #region Propyties
 
         HttpClient _client;
-        string _url = "http://192.168.1.100:8000/";
+        //string _url = "http://192.168.1.100:8000/";
+        string _url = "http://164.68.113.72:8000/";
+
+        
+
 
         private List<ArtifactInformationModels> _models;
 

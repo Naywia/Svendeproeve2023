@@ -2,20 +2,27 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Arkaeologigalleriet.Views.UpdateStatusView"
+             xmlns:ViewModel="clr-namespace:Arkaeologigalleriet.ViewModels"
+             x:DataType="ViewModel:UpdateStatusViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="Ændre status">
+    <ContentPage.BindingContext>
+        <ViewModel:UpdateStatusViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:SelectedItemEventArgsConverter x:Key="SelectedItemEventArgsConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <VerticalStackLayout Spacing="20" VerticalOptions="Center">
+        <Label Text="{Binding Artefacts[0].Name}" TextColor="Black" HorizontalOptions="Center"/>
         <Border WidthRequest="350"
                     StrokeShape="RoundRectangle 2,2,2,2"
                     BackgroundColor="Transparent"
                     StrokeThickness="1">
-            <Picker Title="Ændre status" HorizontalTextAlignment="Center" x:Name="picker">
-                <Picker.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>Lager A</x:String>
-                        <x:String>Display</x:String>
-                        <x:String>Restauration</x:String>
-                    </x:Array>
-                </Picker.ItemsSource>
+            <Picker Title="Ændre status" HorizontalTextAlignment="Center" ItemsSource="{Binding Storages}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedStorage}">
+                
             </Picker>
         </Border>
 
@@ -23,6 +30,8 @@
             <Button Text="Gem" WidthRequest="150"/>
             <Button Text="Annuller" WidthRequest="150"/>
         </HorizontalStackLayout>
+        
+
     </VerticalStackLayout>
 </ContentPage>
     
