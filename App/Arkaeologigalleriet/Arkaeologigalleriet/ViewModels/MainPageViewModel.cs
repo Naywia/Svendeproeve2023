@@ -4,10 +4,6 @@
 namespace Arkaeologigalleriet.ViewModels
 {
     public partial class MainPageViewModel : ObservableObject
-    {
-        [ObservableProperty]
-        string _jsonToken;
-
-        
+    {  
     }
 }

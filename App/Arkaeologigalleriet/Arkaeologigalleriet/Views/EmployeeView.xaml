@@ -7,13 +7,18 @@
              x:DataType="viemodel:EmployeeViewModel">
     
     <VerticalStackLayout Spacing="10">
-        <Entry Text="Peter Pedal"
-               IsReadOnly="True"
-               Margin="10"
-               HeightRequest="50"
-               VerticalTextAlignment="End"
-               FontSize="Large"
-               FontAttributes="Bold"/>
+        <HorizontalStackLayout Spacing="0">            
+            <Label FontSize="Large"
+               FontAttributes="Bold" Margin="10">
+                <Label.Text>
+                    <MultiBinding StringFormat="{}{0} {1}">
+                        <Binding Path="EmployeeModel.FirstName"/>
+                        <Binding Path="EmployeeModel.LastName"/>
+                    </MultiBinding>
+                </Label.Text>
+            </Label>
+        </HorizontalStackLayout>
+        
         
         <HorizontalStackLayout HeightRequest="50" Spacing="10">
             <Image Source="abstract_user_flat_4.svg" Margin="10,0,10,0"/>
@@ -29,7 +34,7 @@
                     StrokeShape="RoundRectangle 2,2,2,2"
                     BackgroundColor="Transparent"
                     StrokeThickness="1">
-                <Entry></Entry>
+                <Entry Text="{Binding EmployeeModel.PhoneNumber, Mode=TwoWay}"></Entry>
             </Border>
         </HorizontalStackLayout>
         <HorizontalStackLayout Spacing="10">
@@ -38,11 +43,16 @@
                     StrokeShape="RoundRectangle 2,2,2,2"
                     BackgroundColor="Transparent"
                     StrokeThickness="1">
-                <Entry></Entry>
+                <VerticalStackLayout>
+                    <Entry Text="{Binding EmployeeModel.Address, Mode=TwoWay}"></Entry>
+                    <Entry Text="{Binding EmployeeModel.City, Mode=TwoWay}"></Entry>
+                    <Entry Text="{Binding EmployeeModel.Postal, Mode=TwoWay}"></Entry>
+                </VerticalStackLayout>
+                
             </Border>
         </HorizontalStackLayout>
         <HorizontalStackLayout Spacing="25" HorizontalOptions="Center" Margin="0,25,0,0">
-            <Button Text="Gem" WidthRequest="150"/>
+            <Button Text="Gem" WidthRequest="150" Command="{Binding UpdateinfoCommand}"/>
             <Button Text="Annuller" WidthRequest="150"/>
         </HorizontalStackLayout>
     </VerticalStackLayout>

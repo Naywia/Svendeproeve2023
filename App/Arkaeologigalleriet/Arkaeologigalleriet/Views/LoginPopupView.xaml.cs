@@ -23,7 +23,7 @@ public partial class LoginPopupView : ContentPage
         var loginresponce = await _vm.Login();
         if (loginresponce != null)
         {
-            await Application.Current.MainPage.Navigation.PopModalAsync();
+            //await Application.Current.MainPage.Navigation.PopModalAsync();
         }
         else
         {

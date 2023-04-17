@@ -29,8 +29,8 @@ public static class MauiProgram
         builder.Services.AddTransient<EmployeeView>();
         builder.Services.AddTransient<EmployeeViewModel>();
 
-        builder.Services.AddTransient<SearchView>();
-        builder.Services.AddTransient<SearchViewModel>();
+        builder.Services.AddSingleton<SearchView>();
+        builder.Services.AddSingleton<SearchViewModel>();
 
         builder.Services.AddTransient<ScanQRView>();
         builder.Services.AddTransient<ScanQRViewModel>();
@@ -43,6 +43,9 @@ public static class MauiProgram
 
         builder.Services.AddTransient<UpdateStatusView>();
         builder.Services.AddTransient<UpdateStatusViewModel>();
+
+        builder.Services.AddTransient<EmployeeView>();
+        builder.Services.AddTransient<EmployeeViewModel>();
 
 
 #if DEBUG

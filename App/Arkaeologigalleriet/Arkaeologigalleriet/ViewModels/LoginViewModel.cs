@@ -1,18 +1,22 @@
-﻿using Newtonsoft.Json;
+﻿using CommunityToolkit.Mvvm.Input;
+using Newtonsoft.Json;
+using System;
 
 namespace Arkaeologigalleriet.ViewModels
 {
     public partial class LoginViewModel
     {
         HttpClient _client;
-        //string _url = "http://192.168.1.100:8000/";
-        string _url = "http://164.68.113.72:8000/";
+        string _url = "http://192.168.1.100:8000/";
+        //string _url = "http://164.68.113.72:8000/";
+        
 
         public LoginViewModel()
         {
 
         }
 
+        
         public async Task<LoginResponce> Login(string email = "ppedal@ag.dk", string password = "MandenMedDenGuleHat")
         {
             LoginResponce loginResponce = new LoginResponce();
@@ -46,6 +50,7 @@ namespace Arkaeologigalleriet.ViewModels
                     }
                     
                     await App.ShellViewModel.GetUserDetalis(loginResponce.employeeID);
+                    await Application.Current.MainPage.Navigation.PopModalAsync();
                     return loginResponce;
                 }
             }

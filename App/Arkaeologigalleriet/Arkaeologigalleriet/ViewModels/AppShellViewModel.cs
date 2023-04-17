@@ -1,5 +1,7 @@
 ﻿using Arkaeologigalleriet.Models;
+using Arkaeologigalleriet.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Net.Http.Headers;
@@ -7,14 +9,14 @@ using System.Runtime.CompilerServices;
 
 namespace Arkaeologigalleriet.ViewModels
 {
-    public class AppShellViewModel : INotifyPropertyChanged
+    public partial class AppShellViewModel : INotifyPropertyChanged
     {
         int _empId;
         HttpClient _client;
 
 
-        //string _url = "http://192.168.1.100:8000/";
-        string _url = "http://164.68.113.72:8000/";
+        string _url = "http://192.168.1.100:8000/";
+        //string _url = "http://164.68.113.72:8000/";
 
 
 
@@ -27,7 +29,6 @@ namespace Arkaeologigalleriet.ViewModels
         {
             _empId = empId;
             _client = new HttpClient();
-            RootUserModel model = new RootUserModel();
             _employeeModel = new EmployeeModel();
 
             try
@@ -44,13 +45,14 @@ namespace Arkaeologigalleriet.ViewModels
                         var jsonObject = JsonConvert.DeserializeObject<RootUserModel>(payload);
                         foreach (var item in jsonObject.User)
                         {
-                            _employeeModel.FirstName = item.FirstName;
-                            _employeeModel.LastName = item.LastName;
-                            _employeeModel.Address = item.Address;
-                            _employeeModel.City = item.City;
-                            _employeeModel.Email = item.Email;
-                            _employeeModel.EmployeeType = item.EmployeeType;
-                            _employeeModel.ID = item.ID;
+                            //_employeeModel.FirstName = item.FirstName;
+                            //_employeeModel.LastName = item.LastName;
+                            //_employeeModel.Address = item.Address;
+                            //_employeeModel.City = item.City;
+                            //_employeeModel.Email = item.Email;
+                            //_employeeModel.EmployeeType = item.EmployeeType;
+                            //_employeeModel.ID = item.ID;
+                            EmployeeModel = item;
                         }
 
                     }
@@ -70,6 +72,18 @@ namespace Arkaeologigalleriet.ViewModels
             return null;
         }
 
+        [RelayCommand]
+        private async void ProfilNavi()
+        {
+            await Shell.Current.GoToAsync(nameof(EmployeeView), 
+                new Dictionary<string, object>
+                {
+                    ["EmployeeModel"] = EmployeeModel
+                }
+            );
+        }
+
+
         private EmployeeModel _employeeModel;
 
         public EmployeeModel EmployeeModel
@@ -78,7 +92,7 @@ namespace Arkaeologigalleriet.ViewModels
             set
             {
                 _employeeModel = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged(nameof(EmployeeModel));
             }
         }
 
