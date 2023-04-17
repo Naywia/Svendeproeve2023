@@ -51,7 +51,8 @@ void connectToWifi(char *ssid, char *psw)
 
 char *getWifiSSID()
 {
-	return "Room Of Requirements";
+	// return "Room Of Requirements";
+	return "Linksys07043";
 }
 
 char *getStorage()
