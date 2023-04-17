@@ -1,6 +1,7 @@
 ﻿
 using Arkaeologigalleriet.Models;
 using Arkaeologigalleriet.Services;
+using Arkaeologigalleriet.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel;
@@ -42,6 +43,12 @@ namespace Arkaeologigalleriet.ViewModels
             {
                 await Application.Current.MainPage.DisplayAlert("Fejl", "Der skete en fejl. Prøv igen", "Ok");
             }
+        }
+
+        [RelayCommand]
+        public async void NaviToChangePassword()
+        {
+            await Shell.Current.GoToAsync($"{Shell.Current.GoToAsync(nameof(ChangePasswordView))}?UserID={EmployeeModel.ID}");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

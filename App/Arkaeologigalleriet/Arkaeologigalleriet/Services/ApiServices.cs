@@ -16,6 +16,9 @@ namespace Arkaeologigalleriet.Services
         HttpClient _client = new HttpClient();
         string _url = "http://192.168.1.100:8000/";
 
+        #region UpdateEmp
+
+        
         public async Task<bool> UpdateEmpInfo(EmployeeModel model)
         {
             int empId = await GetEmployeeTypeID(model.EmployeeType);
@@ -48,7 +51,7 @@ namespace Arkaeologigalleriet.Services
             catch (Exception ex)
             {
                 await Console.Out.WriteLineAsync(ex.Message);
-                throw;
+                
             }
             return false;
         }
@@ -92,5 +95,39 @@ namespace Arkaeologigalleriet.Services
 
             return 0;
         }
+        #endregion
+
+        #region ChangePassword
+
+        public async Task<bool> Changepassword(int userID ,string oldPassword, string newPassword, string repeatPassword)
+        {
+            PasswordModel passwordModel = new PasswordModel()
+            {
+                NewPassword = newPassword,
+                OldPassword = oldPassword,
+                RepeatNewPassword = repeatPassword
+            };
+
+            try
+            {
+                using HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Patch, _url + "password?userID=" + userID);
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await SecureStorage.Default.GetAsync("JWT"));
+
+                requestMessage.Content = JsonContent.Create(passwordModel);
+                HttpResponseMessage response = await _client.SendAsync(requestMessage);
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+                
+            }
+            return false;
+        }
+
+        #endregion
     }
 }
