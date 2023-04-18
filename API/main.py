@@ -117,8 +117,8 @@ class Archaeologygallery:
 
     @api.post("/artefact", status_code=201, summary="Create new artefact.")
     async def addArtefact(artefact: Artefact, response: Response, token: Token = Depends(Authorize().validateJWT)):
-        """ Endpoint for creating a new user. """
-        Conn().insertArtefact(artefact.artefact, artefact.artefactDescription, artefact.artefactTypeID, artefact.placementID)
+        """ Endpoint for creating a new artefact. """
+        Conn().insertArtefact(artefact.artefact, artefact.artefactDescription, artefact.artefactTypeID, artefact.placementID, artefact.artefactImage)
         return {'message': 'Artefact has been created'}
 
     @api.post("/controller", status_code=201, summary="Create new controller.")
@@ -294,6 +294,8 @@ class Archaeologygallery:
             temp['ID'] = artefacts[i][0]
             temp['Name'] = artefacts[i][1]
             temp['Description'] = artefacts[i][2]
+            if artefacts[i][8]:
+                temp['ArtefactImage'] = artefacts[i][8]
             temp['ArtefactType'] = artefacts[i][3]
             temp['Storage'] = artefacts[i][4]
             temp['Shelf'] = artefacts[i][5]
@@ -475,6 +477,9 @@ class Archaeologygallery:
         if artefact.artefactDescription:
             columsToUpdate.append("artefactDescription")
             values.append(artefact.artefactDescription)
+        if artefact.artefactImage:
+            columsToUpdate.append("artefactImage")
+            values.append(artefact.artefactImage)
         if artefact.artefactTypeID:
             columsToUpdate.append("artefactTypeID")
             values.append(artefact.artefactTypeID)

@@ -61,6 +61,7 @@ class Artefact(BaseModel):
     """ Request body when adding a new artefact. """
     artefact: str
     artefactDescription: str
+    artefactImage: str = None
     artefactTypeID: int
     placementID: int
 
@@ -68,6 +69,7 @@ class UpdateArtefact(BaseModel):
     """ Request body when updating a artefact. """
     artefact: str = None
     artefactDescription: str = None
+    artefactImage: str = None
     artefactTypeID: int = None
     placementID: int = None
 

@@ -72,10 +72,15 @@ class Connection:
             VALUES ('{artefactType}');"""
         self.execute(sql, commit=True)
 
-    def insertArtefact(self, artefact, artefactDescription, artefactTypeID, placementID):
+    def insertArtefact(self, artefact, artefactDescription, artefactTypeID, placementID, artefactImage):
         """ Insert a new artefact into the database. """
-        sql = f"""INSERT INTO "Artefact" ("artefact", "artefactDescription", "artefactTypeID", "placementID")
-            VALUES ('{artefact}', '{artefactDescription}', {artefactTypeID}, {placementID});"""
+        sql = f"""INSERT INTO "Artefact" ("artefact", "artefactDescription", "artefactTypeID", "placementID" """
+
+        if artefactImage:
+            sql += f""", "artefactImage") 
+            VALUES ('{artefact}', '{artefactDescription}', {artefactTypeID}, {placementID}, {artefactImage});"""
+        else:
+            sql += f""") VALUES ('{artefact}', '{artefactDescription}', {artefactTypeID}, {placementID});"""
         self.execute(sql, commit=True)
 
     def insertController(self, controller, storageID):
@@ -171,7 +176,7 @@ class Connection:
 
     def getArtefacts(self, artefactID = None):
         """ Get all or one artefact. """
-        sql = f"""SELECT "artefactID", "artefact", "artefactDescription", "artefactType", "storageName", "shelf", "row", "Artefact"."placementID"
+        sql = f"""SELECT "artefactID", "artefact", "artefactDescription", "artefactType", "storageName", "shelf", "row", "Artefact"."placementID", "artefactImage"
                   FROM "Artefact"
                   INNER JOIN "ArtefactType" ON "Artefact"."artefactTypeID" = "ArtefactType"."artefactTypeID"
                   INNER JOIN "StoragePlacement" ON "Artefact"."placementID" = "StoragePlacement"."placementID"
