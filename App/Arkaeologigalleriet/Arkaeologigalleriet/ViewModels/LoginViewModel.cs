@@ -17,7 +17,7 @@ namespace Arkaeologigalleriet.ViewModels
         }
 
         
-        public async Task<LoginResponce> Login(string email = "ppedal@ag.dk", string password = "MandenMedDenGuleHat")
+        public async Task<LoginResponce> Login(string email = "wind@ag.dk", string password = "testy")
         {
             LoginResponce loginResponce = new LoginResponce();
             _client = new HttpClient();

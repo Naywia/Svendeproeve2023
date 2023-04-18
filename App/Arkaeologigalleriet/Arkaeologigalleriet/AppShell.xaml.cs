@@ -11,10 +11,10 @@ public partial class AppShell : Shell
 
 		BindingContext = App.ShellViewModel;
 		Routing.RegisterRoute(nameof(EmployeeView), typeof(EmployeeView));
-		Routing.RegisterRoute(nameof(SearchView), typeof(SearchView));
-		Routing.RegisterRoute(nameof(ScanQRView), typeof(ScanQRView));
 		Routing.RegisterRoute(nameof(ArtifactInformationView), typeof(ArtifactInformationView));
 		Routing.RegisterRoute(nameof(UpdateStatusView), typeof(UpdateStatusView));
+		Routing.RegisterRoute(nameof(ChangePasswordView), typeof(ChangePasswordView));
+
 	}
 
     private async void LogOutBtn(object sender, EventArgs e)

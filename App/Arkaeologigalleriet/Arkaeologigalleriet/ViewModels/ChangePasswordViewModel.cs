@@ -69,6 +69,11 @@ namespace Arkaeologigalleriet.ViewModels
         }
         #endregion
 
+        public ChangePasswordViewModel()
+        {
+            
+        }
+
         [RelayCommand]
         public async Task<bool> CheckPassword()
         {

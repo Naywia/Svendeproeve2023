@@ -28,7 +28,7 @@
 
         <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="0,30,0,0">
             <Button Text="Gem" WidthRequest="150"/>
-            <Button Text="Annuller" WidthRequest="150"/>
+            <Button Text="Annuller" WidthRequest="150" Command="{Binding CancelUpdateCommand}"/>
         </HorizontalStackLayout>
         
 

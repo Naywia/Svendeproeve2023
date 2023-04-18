@@ -1,4 +1,5 @@
 ﻿using Arkaeologigalleriet.Models;
+using Arkaeologigalleriet.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
@@ -15,7 +16,7 @@ using System.Threading.Tasks;
 namespace Arkaeologigalleriet.ViewModels
 {
     [QueryProperty(nameof(ArtifactID), nameof(ArtifactID))]
-    public class UpdateStatusViewModel : INotifyPropertyChanged
+    public partial class UpdateStatusViewModel : INotifyPropertyChanged
     {
 
         HttpClient _client;
@@ -72,7 +73,6 @@ namespace Arkaeologigalleriet.ViewModels
                 {
                     _selectedStorage = value;
                     OnPropertyChanged(nameof(SelectedStorage));
-                    UpdateArtefact();
                 }
             }
         }
@@ -160,10 +160,16 @@ namespace Arkaeologigalleriet.ViewModels
             }
         }
 
-        
+        [RelayCommand]
         private void UpdateArtefact()
         {
             var testy = SelectedStorage;
+        }
+
+        [RelayCommand]
+        private async void CancelUpdate()
+        {
+            await AppShell.Current.GoToAsync($"..");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

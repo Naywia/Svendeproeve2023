@@ -48,7 +48,7 @@ namespace Arkaeologigalleriet.ViewModels
         [RelayCommand]
         public async void NaviToChangePassword()
         {
-            await Shell.Current.GoToAsync($"{Shell.Current.GoToAsync(nameof(ChangePasswordView))}?UserID={EmployeeModel.ID}");
+            await Shell.Current.GoToAsync($"{nameof(ChangePasswordView)}?UserID={EmployeeModel.ID}");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
