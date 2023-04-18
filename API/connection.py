@@ -171,7 +171,7 @@ class Connection:
 
     def getArtefacts(self, artefactID = None):
         """ Get all or one artefact. """
-        sql = f"""SELECT "artefactID", "artefact", "artefactDescription", "artefactType", "storageName", "shelf", "row" 
+        sql = f"""SELECT "artefactID", "artefact", "artefactDescription", "artefactType", "storageName", "shelf", "row", "Artefact"."placementID"
                   FROM "Artefact"
                   INNER JOIN "ArtefactType" ON "Artefact"."artefactTypeID" = "ArtefactType"."artefactTypeID"
                   INNER JOIN "StoragePlacement" ON "Artefact"."placementID" = "StoragePlacement"."placementID"

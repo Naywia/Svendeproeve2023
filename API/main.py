@@ -297,8 +297,8 @@ class Archaeologygallery:
             temp['ArtefactType'] = artefacts[i][3]
             temp['Storage'] = artefacts[i][4]
             temp['Shelf'] = artefacts[i][5]
-            if artefacts[i][6]:
-                temp['Row'] = artefacts[i][6]
+            temp['Row'] = artefacts[i][6]
+            temp['PlacementID'] = artefacts[i][7]
 
             result.append(temp)
             i += 1
@@ -373,14 +373,15 @@ class Archaeologygallery:
 
     # -------------------------------------- UPDATE -------------------------------------- #
 
+    
     @api.patch("/employeeType", summary="Update employee type")
-    async def updateEmployeeType(employeeTypeID: int, eType: EmployeeType, token: Token = Depends(Authorize().validateJWT)):
+    async def updateEmployeeType(employeeTypeID: int, eType: EmployeeType, response: Response, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating an employee type. """
         result = Conn().updateEmployeeType(employeeTypeID, eType.employeeType)
         return {'message': result}
 
     @api.patch("/user", summary="Update user")
-    async def updateUser(userID: int, user: UpdateUser, token: Token = Depends(Authorize().validateJWT)):
+    async def updateUser(userID: int, user: UpdateUser, response: Response, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating user infomation. """
         columsToUpdate = []
         values = []
@@ -414,7 +415,7 @@ class Archaeologygallery:
         return {"message": result}
 
     @api.patch("/password", summary="Update user password")
-    async def updatePassword(userID: int, psw: UpdatePsw, token: Token = Depends(Authorize().validateJWT)):
+    async def updatePassword(userID: int, psw: UpdatePsw, response: Response, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating a users password. """
         hashed_password = Conn().getPassword(userID)
         if Authorize().verifyPassword(oldPassword, hashed_password):
@@ -429,13 +430,13 @@ class Archaeologygallery:
         return {'message': result}
         
     @api.patch("/storage", summary="Update storage")
-    async def updateStorage(storageID: int, storage: Storage, token: Token = Depends(Authorize().validateJWT)):
+    async def updateStorage(storageID: int, storage: Storage, response: Response, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating a storage. """
         result = Conn().updateStorage(storageID, storage.storageName)
         return {'message': result}
 
     @api.patch("/placement", summary="Update storage placement")
-    async def updatePlacement(placementID: int, placement: UpdateStoragePlacement, token: Token = Depends(Authorize().validateJWT)):
+    async def updatePlacement(placementID: int, placement: UpdateStoragePlacement, response: Response, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating a placement. """
         columsToUpdate = []
         values = []
@@ -456,13 +457,13 @@ class Archaeologygallery:
         return {"message": result}
 
     @api.patch("/artefactType", summary="Update an artefact type")
-    async def updateArtefactType(artefactTypeID: int, aType: ArtefactType, token: Token = Depends(Authorize().validateJWT)):
+    async def updateArtefactType(artefactTypeID: int, aType: ArtefactType, response: Response, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating an artefact type. """
         result = Conn().updateArtefactType(artefactTypeID, aType.artefactType)
         return {'message': result}
 
     @api.patch("/artefact", summary="Update artefact")
-    async def updateArtefact(artefactID: int, artefact: UpdateArtefact, token: Token = Depends(Authorize().validateJWT)):
+    async def updateArtefact(artefactID: int, artefact: UpdateArtefact, response: Response, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating an artefact. """
         columsToUpdate = []
         values = []
@@ -487,7 +488,7 @@ class Archaeologygallery:
         return {"message": result}
 
     @api.patch("/controller", summary="Update controller")
-    async def updateController(controllerID: int, cntr: UpdateController, token: Token = Depends(Authorize().validateJWT)):
+    async def updateController(controllerID: int, cntr: UpdateController, response: Response, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating a controller. """
         columsToUpdate = []
         values = []
@@ -506,7 +507,7 @@ class Archaeologygallery:
         return {"message": result}
 
     @api.patch("/logType", summary="Update an log type")
-    async def updateLogType(logTypeID: int, lType: LogType, token: Token = Depends(Authorize().validateJWT)):
+    async def updateLogType(logTypeID: int, lType: LogType, response: Response, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating an log type. """
         result = Conn().updateLogType(logTypeID, lType.logType)
         return {'message': result}
