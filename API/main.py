@@ -39,9 +39,9 @@ class Mosquitto:
             data = json.loads(payload)
 
             #print(payload + " received on topic[" + msg.topic + "]")
-            if msg.topic is "setup":
+            if msg.topic == "setup":
                 pass
-            elif msg.topic is "security":
+            elif msg.topic == "security":
                 Conn().insertLog(data["incident"], data["incidentDate"], data["logTypeID"], data["controllerID"])
 
         else:
@@ -417,8 +417,8 @@ class Archaeologygallery:
     @api.patch("/password", summary="Update user password")
     async def updatePassword(userID: int, psw: UpdatePsw, response: Response, token: Token = Depends(Authorize().validateJWT)):
         """ Endpont for updating a users password. """
-        hashed_password = Conn().getPassword(userID)
-        if Authorize().verifyPassword(oldPassword, hashed_password):
+        hashed_password = Conn().getPassword(userID)[0]
+        if Authorize().verifyPassword(psw.oldPassword, hashed_password):
             if psw.newPassword == psw.repeatNewPassword:
                 result = Conn().updatePassword(userID, hashed_password, Authorize().hashPassword(psw.newPassword))
             else:
