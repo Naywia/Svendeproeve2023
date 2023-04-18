@@ -28,5 +28,6 @@ namespace Arkaeologigalleriet.Models
         public int Shelf { get; set; }
         public string Row { get; set; }
         public int PlacementID { get; set; }
+        public string ArtefactImage { get; set; } 
     }
 }

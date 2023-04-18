@@ -21,13 +21,42 @@
                     StrokeShape="RoundRectangle 2,2,2,2"
                     BackgroundColor="Transparent"
                     StrokeThickness="1">
-            <Picker Title="Ændre status" HorizontalTextAlignment="Center" ItemsSource="{Binding Storages}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedStorage}">
-                
+            <Picker Title="Ændre status" HorizontalTextAlignment="Center" ItemsSource="{Binding Storages}" ItemDisplayBinding="{Binding Name}" 
+                    SelectedItem="{Binding SelectedStorage}" >
+                <Picker.Behaviors>
+                    <toolkit:EventToCommandBehavior
+                        EventName="SelectedIndexChanged"
+                        Command="{Binding UpdatePlacementsCommand}"
+                        EventArgsConverter="{StaticResource SelectedItemEventArgsConverter}"
+                        CommandParameter="SelectedItem"/>
+                </Picker.Behaviors>
             </Picker>
         </Border>
 
+
+
+        
+            <Border WidthRequest="350"
+                    StrokeShape="RoundRectangle 2,2,2,2"
+                    BackgroundColor="Transparent"
+                    StrokeThickness="1">
+                <Picker Title="Ændre status" HorizontalTextAlignment="Center" ItemsSource="{Binding Placements}" ItemDisplayBinding="{Binding DisplayText}" 
+                        SelectedItem="{Binding Selectedeplacement}">
+                <Picker.Behaviors>
+                    <toolkit:EventToCommandBehavior
+                        EventName="SelectedIndexChanged"
+                        Command="{Binding GetPlacementIDCommand}"
+                        EventArgsConverter="{StaticResource SelectedItemEventArgsConverter}"
+                        CommandParameter="SelectedItem"/>
+                </Picker.Behaviors>
+            </Picker>
+            </Border>
+            
+        
+        
+
         <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="0,30,0,0">
-            <Button Text="Gem" WidthRequest="150"/>
+            <Button Text="Gem" WidthRequest="150" Command="{Binding SaveNewPlacmentAsyncCommand}"/>
             <Button Text="Annuller" WidthRequest="150" Command="{Binding CancelUpdateCommand}"/>
         </HorizontalStackLayout>
         

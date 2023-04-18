@@ -7,8 +7,8 @@ namespace Arkaeologigalleriet.ViewModels
     public partial class LoginViewModel
     {
         HttpClient _client;
-        string _url = "http://192.168.1.100:8000/";
-        //string _url = "http://164.68.113.72:8000/";
+        //string _url = "http://192.168.1.100:8000/";
+        string _url = "http://164.68.113.72:8000/";
         
 
         public LoginViewModel()
@@ -17,7 +17,7 @@ namespace Arkaeologigalleriet.ViewModels
         }
 
         
-        public async Task<LoginResponce> Login(string email = "wind@ag.dk", string password = "testy")
+        public async Task<LoginResponce> Login(string email = "aand@ag.dk", string password = "Andersine")
         {
             LoginResponce loginResponce = new LoginResponce();
             _client = new HttpClient();

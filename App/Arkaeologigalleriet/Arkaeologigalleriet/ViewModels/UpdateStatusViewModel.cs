@@ -1,5 +1,7 @@
 ﻿using Arkaeologigalleriet.Models;
+using Arkaeologigalleriet.Services;
 using Arkaeologigalleriet.Views;
+using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
@@ -19,9 +21,9 @@ namespace Arkaeologigalleriet.ViewModels
     public partial class UpdateStatusViewModel : INotifyPropertyChanged
     {
 
-        HttpClient _client;
-        string _url = "http://192.168.1.100:8000/";
-        //string _url = "http://164.68.113.72:8000/";
+        ApiServices _apiServices;
+
+        private int _newPlacmentId;
 
         private int _artifactID;
 
@@ -34,6 +36,19 @@ namespace Arkaeologigalleriet.ViewModels
                 OnPropertyChanged(nameof(ArtifactID));
             }
         }
+
+        private ObservableCollection<PlacementModel> _placements;
+
+        public ObservableCollection<PlacementModel> Placements
+        {
+            get { return _placements; }
+            set
+            {
+                _placements = value; 
+                OnPropertyChanged(nameof(Placements));
+            }
+        }
+
 
         private ObservableCollection<StorageModel> _storages;
 
@@ -77,99 +92,94 @@ namespace Arkaeologigalleriet.ViewModels
             }
         }
 
+        private List<PlacementModel> _placementModels;
+
+        public List<PlacementModel> PlacementModels
+        {
+            get { return _placementModels; }
+            set 
+            {
+                _placementModels = value; 
+                OnPropertyChanged(nameof(PlacementModels));
+            }
+        }
+
+
+        private PlacementModel _selectedeplacement;
+
+        public PlacementModel Selectedeplacement
+        {
+            get { return _selectedeplacement; }
+            set 
+            {
+                _selectedeplacement = value; 
+                OnPropertyChanged(nameof(Selectedeplacement));
+            }
+        }
 
 
 
         public UpdateStatusViewModel()
         {
-            GetStorages();
+            _apiServices = new();
+            Placements = new ObservableCollection<PlacementModel>();
+            LoadDataAsync();
         }
 
-        public async void GetStorages()
+        private async Task LoadDataAsync()
+        {
+            await GetStorages();
+        }
+
+        public async Task GetStorages()
         {
             Storages = new ObservableCollection<StorageModel>();
-            _client = new HttpClient();
-
-            try
-            {
-                using HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, _url + "storage");
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await SecureStorage.Default.GetAsync("JWT"));
-                HttpResponseMessage response = await _client.SendAsync(request);
-                if (response.IsSuccessStatusCode)
-                {
-                    string payload = await response.Content.ReadAsStringAsync();
-                    try
-                    {
-                        var jsonmodel = JsonConvert.DeserializeObject<StoragesListModel>(payload);
-                        foreach (var item in jsonmodel.Storages)
-                        {
-                            Storages.Add(item);
-                        }
-
-
-                    }
-                    catch (Exception ex)
-                    {
-                        await Console.Out.WriteLineAsync(ex.Message);
-                        throw;
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                await Console.Out.WriteLineAsync(ex.Message);
-                throw;
-            }            
-            
+            var getListFomrApi = await _apiServices.GetStorage();
+            Storages = getListFomrApi.ToObservableCollection();
+            PlacementModels = new List<PlacementModel>();
+            PlacementModels = await _apiServices.GetPlacementModelsAsync();
+            Placements = PlacementModels.ToObservableCollection();
         }
 
         public async void GetArtefact()
         {
             Artefacts = new ObservableCollection<Artefact>();
-            _client = new HttpClient();
+            List<Artefact> artefacts = await _apiServices.GetArtefactAsync(ArtifactID);
+            Artefacts = artefacts.ToObservableCollection();
+        }
 
-            try
-            {
-                using HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, _url + "artefact?artefactID=" + ArtifactID);
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await SecureStorage.Default.GetAsync("JWT"));
-                HttpResponseMessage response = await _client.SendAsync(request);
-                if (response.IsSuccessStatusCode)
-                {
-                    string payload = await response.Content.ReadAsStringAsync();
-                    try
-                    {
-                        var jsonmodel = JsonConvert.DeserializeObject<ArtifactInformationModel>(payload);
-                        foreach (var item in jsonmodel.Artefact)
-                        {
-                            Artefacts.Add(item);
-                        }
+        
 
-                    }
-                    catch (Exception ex)
-                    {
-                        await Console.Out.WriteLineAsync(ex.Message);
-                        
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                await Console.Out.WriteLineAsync(ex.Message);
-                
-            }
+        [RelayCommand]
+        private void UpdatePlacements()
+        {
+            Placements = new ObservableCollection<PlacementModel>(_placementModels.Where(p => p.Storage == SelectedStorage.Name));
         }
 
         [RelayCommand]
-        private void UpdateArtefact()
+        private void GetPlacementID()
         {
-            var testy = SelectedStorage;
+            _newPlacmentId = Selectedeplacement.ID;
         }
 
         [RelayCommand]
         private async void CancelUpdate()
         {
             await AppShell.Current.GoToAsync($"..");
+        }
+
+        [RelayCommand]
+        private async void SaveNewPlacmentAsync()
+        {
+            if (await _apiServices.UpdatePlacmentOnArtefact(ArtifactID, _newPlacmentId))
+            {
+                await Application.Current.MainPage.DisplayAlert("Opdateret", "Placment er opdateret.", "Ok");
+                await AppShell.Current.GoToAsync("..");
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Fejl", "Der skete en fejl. Prøv igen", "Ok");
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
