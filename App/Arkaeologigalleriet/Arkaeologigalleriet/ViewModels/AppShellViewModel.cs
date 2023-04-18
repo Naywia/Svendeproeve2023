@@ -83,6 +83,13 @@ namespace Arkaeologigalleriet.ViewModels
             );
         }
 
+        [RelayCommand]
+        public async void LogoutBTN()
+        {
+            SecureStorage.Default.Remove("JWT");
+            await Application.Current.MainPage.Navigation.PushModalAsync(new LoginPopupView());
+        }
+
 
         private EmployeeModel _employeeModel;
 

@@ -36,7 +36,7 @@
     <Shell.FlyoutFooterTemplate>
         <DataTemplate>
             <HorizontalStackLayout Spacing="10" Padding="15">
-                <ImageButton Source="out.png" HeightRequest="25" WidthRequest="30" Clicked="LogOutBtn">
+                <ImageButton Source="out.png" HeightRequest="25" WidthRequest="30" Command="{Binding LogoutBTNCommand}">
 
                 </ImageButton>
                 <Label Text="Log ud" VerticalTextAlignment="Center"/>

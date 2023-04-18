@@ -17,8 +17,5 @@ public partial class AppShell : Shell
 
 	}
 
-    private async void LogOutBtn(object sender, EventArgs e)
-    {
-        await Application.Current.MainPage.Navigation.PushModalAsync(new LoginPopupView());
-    }
+    
 }
