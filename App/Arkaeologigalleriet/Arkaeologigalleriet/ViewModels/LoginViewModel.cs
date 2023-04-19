@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using Arkaeologigalleriet.Models;
+using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using System;
 
@@ -7,8 +8,8 @@ namespace Arkaeologigalleriet.ViewModels
     public partial class LoginViewModel
     {
         HttpClient _client;
-        //string _url = "http://192.168.1.100:8000/";
-        string _url = "http://164.68.113.72:8000/";
+        string _url = "http://192.168.1.100:8000/";
+        //string _url = "http://164.68.113.72:8000/";
         
 
         public LoginViewModel()
@@ -17,9 +18,9 @@ namespace Arkaeologigalleriet.ViewModels
         }
 
         
-        public async Task<LoginResponce> Login(string email = "aand@ag.dk", string password = "Andersine")
+        public async Task<LoginResponceModel> Login(string email = "aand@ag.dk", string password = "Andersine")
         {
-            LoginResponce loginResponce = new LoginResponce();
+            LoginResponceModel loginResponce = new();
             _client = new HttpClient();
             try
             {
@@ -41,7 +42,7 @@ namespace Arkaeologigalleriet.ViewModels
                     string payload = await response.Content.ReadAsStringAsync();
                     try
                     {
-                        loginResponce = JsonConvert.DeserializeObject<LoginResponce>(payload);
+                        loginResponce = JsonConvert.DeserializeObject<LoginResponceModel>(payload);
                     }
                     catch (Exception ex)
                     {
@@ -63,9 +64,5 @@ namespace Arkaeologigalleriet.ViewModels
         }
     }
 
-    public class LoginResponce
-    {
-        public string Message { get; set; }
-        public int employeeID { get; set; }
-    }
+    
 }
