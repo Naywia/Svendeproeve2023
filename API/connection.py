@@ -110,6 +110,17 @@ class Connection:
                   WHERE "email" = '{email}'"""
         return self.execute(sql, single=True)
 
+    def unlockDoor(self, doorCode):
+        """ Get door Codes. """
+        sql = f"""SELECT COUNT(*)
+                FROM "Employee"
+                WHERE "doorCode" = '{doorCode}'"""
+        result = self.execute(sql, single=True)
+        if result[0] > 0:
+            return "Unlocked"
+        else:
+            return "Couldn't unlock"
+
     def getPassword(self, employeeID):
         """ Get user infomation, to login. """
         sql = f"""SELECT "password"

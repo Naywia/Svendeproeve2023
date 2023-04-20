@@ -82,6 +82,15 @@ class Archaeologygallery:
         headers = {"Authorization": f"Bearer {accessToken}"}
         return JSONResponse(content=content, headers=headers)
 
+    # Unlock door.
+    @api.post("/unlockDoor", status_code=200, summary="Unlock door")
+    async def login(doorCode: doorCode, response: Response, token: Token = Depends(Authorize().validateJWT)):
+        """ Unlock door endpoint. """
+        result = Conn().unlockDoor(doorCode.doorCode)
+        if result != "Unlocked":
+            response.status_code = status.HTTP_400_BAD_REQUEST
+        return {'message': result}
+
     # -------------------------------------- CREATE -------------------------------------- #
 
     @api.post("/employeeType", status_code=201, summary="Create new employee type.")

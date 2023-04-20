@@ -94,3 +94,5 @@ class UpdateController(BaseModel):
     controller: str = None
     storageID: int = None
 
+class doorCode(BaseModel):
+    doorCode: int
