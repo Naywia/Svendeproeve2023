@@ -12,7 +12,10 @@
 #include "numpad.h"
 
 // Initate functions.
-void motionSensor(void* param);
+void buttons();
+void motionSensor();
+void check();
+void alarm();
 void connectToWifi(char *ssid, char *psw);
 char *getWifiSSID();
 String httpLogin();
@@ -47,6 +50,8 @@ char client_ID[ID_BUFFER_SIZE];
 bool doorUnlocked = false;
 int controller_ID = 1;
 
+char *sensing;
+
 void setup()
 {
 	// put your setup code here, to run once:
@@ -55,21 +60,88 @@ void setup()
 	FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS); // GRB ordering is assumed
 	FastLED.setBrightness(40);
 
-	// setupController();
+	setupController();
 
-	M5.Lcd.setTextSize(2);
-	M5.Lcd.setCursor(0, 25);
-	M5.Lcd.println("Status: ");
+	// M5.Lcd.setTextSize(2);
+	// M5.Lcd.setCursor(0, 25);
+	// M5.Lcd.println("Status: ");
+	buttons();
 	pinMode(36, INPUT);
 	// Task 1
-    xTaskCreatePinnedToCore(motionSensor, "motionSensor", 4096, NULL, 2, NULL, 0);
+	//xTaskCreatePinnedToCore(alarm, "alarm", 4096, NULL, 2, NULL, 0);
 }
 
 void loop()
 {
 	// put your main code here, to run repeatedly:
+	check();
+
+	if (!doorUnlocked)
+	{
+		motionSensor();
+		delay(500);
+	}
+	else
+	{
+		// M5.Lcd.fillRect(90, 25, 180, 50, BLACK);
+		// M5.Lcd.setCursor(95, 25);
+		// M5.Lcd.print("Not turned on");
+		sensing = "Not turned on";
+		M5.update();
+		delay(5000);
+		doorUnlocked = false;
+	}
+
+	delay(1);
+	M5.update();
+}
+
+void buttons() {
+	// Setup
+        M5.Lcd.drawRect(0, 208, 106, 32, BLUE);
+        M5.Lcd.drawRect(106, 208, 107, 32, BLUE);
+        M5.Lcd.drawRect(213, 208, 106, 32, BLUE);
+        M5.Lcd.drawString("Se Status", 30, 215, 2); // Default first num 80
+        M5.Lcd.drawString("Laas doer op", 123, 215, 2);  // Default first num 80
+        M5.Lcd.drawString("Sluk alarm", 230, 215, 2); // Default first num 80
+}
+
+void motionSensor()
+{
+	// M5.Lcd.fillRect(90, 25, 180, 50, BLACK);
+	// Turn OFF led
+	setLEDStrip(0x0);
+	if (digitalRead(36) == 1)
+	{ // If pin 36 reads a value of 1.
+		// M5.Lcd.setCursor(95, 25);
+		// M5.Lcd.print("Sensing");
+		sensing = "Sensing";
+		alarmOn = true;
+	}
+	else
+	{
+		// M5.Lcd.setCursor(95, 25);
+		// M5.Lcd.print("Not Sensed");
+		sensing = "Not Sensed";
+		alarmOn = false;
+	}
+
+	alarm();
+}
+
+void check() {
+	if (M5.BtnA.wasPressed())
+	{
+		M5.Lcd.fillRect(90, 25, 180, 50, BLACK);
+		M5.Lcd.setCursor(0, 25);
+		M5.Lcd.println("Status: ");
+		M5.Lcd.setCursor(95, 25);
+		M5.Lcd.print(sensing);
+	}
+
 	if (M5.BtnB.wasPressed())
 	{
+		M5.Lcd.clear();
 		unlockDoor();
 		doorUnlocked = true;
 	}
@@ -78,57 +150,26 @@ void loop()
 	{
 		alarmOn = false;
 	}
-
-	delay(1);
-	M5.update();
 }
 
-void motionSensor(void* param)
+void alarm()
 {
-	while (true)
+	// LEDs
+	if (alarmOn)
 	{
-
-		M5.Lcd.fillRect(90, 25, 180, 50, BLACK);
-		// Turn OFF led
-		setLEDStrip(0x0);
-
-		if (!doorUnlocked)
-		{
-			if (digitalRead(36) == 1)
-			{ // If pin 36 reads a value of 1.
-				M5.Lcd.setCursor(95, 25);
-				M5.Lcd.print("Sensing");
-				alarmOn = true;
-				// LEDs
-				if (alarmOn)
-				{
-					setLEDStrip(0xFF0000, 0, 5); // Set LED colour to RED
-					setLEDStrip(0x0000FF, 5);	 // Set LED colour to BLUE
-					delay(500);
-					setLEDStrip(0x0000FF, 0, 5); // Set LED colour to BLUE
-					setLEDStrip(0xFF0000, 5);	 // Set LED colour to RED
-					delay(500);
-				}
-				// Turn OFF led
-				setLEDStrip(0x0);
-			}
-			else
-			{
-				M5.Lcd.setCursor(95, 25);
-				M5.Lcd.print("Not Sensed");
-				alarmOn = false;
-			}
-		}
-		else
-		{
-			M5.Lcd.fillRect(90, 25, 180, 50, BLACK);
-			M5.Lcd.setCursor(95, 25);
-			M5.Lcd.print("Not turned on");
-			delay(5000);
-			doorUnlocked = false;
-		}
+		check();
+		setLEDStrip(0xFF0000, 0, 5); // Set LED colour to RED
+		setLEDStrip(0x0000FF, 5);	 // Set LED colour to BLUE
+		M5.update();
+		delay(500);
+		check();
+		setLEDStrip(0x0000FF, 0, 5); // Set LED colour to BLUE
+		setLEDStrip(0xFF0000, 5);	 // Set LED colour to RED
+		M5.update();
 		delay(500);
 	}
+	// Turn OFF led
+	setLEDStrip(0x0);
 }
 
 void connectToWifi(char *ssid, char *psw)
@@ -174,11 +215,11 @@ char *getStorage()
 
 void unlockDoor()
 {
-	String accessToken = httpLogin();
 	M5.Lcd.setTextSize(1);
 	Numpad numpad;
 
 	char *doorCode = numpad.start();
+	String accessToken = httpLogin();
 
 	// http.begin("http://192.168.1.100:8000/unlockDoor");
 	// http.addHeader("Authorization", accessToken);
@@ -187,9 +228,7 @@ void unlockDoor()
 	// int responseCode = http.POST("username=controller&password=contr0llerPassw0rd");
 	// http.end();
 
-	M5.Lcd.setTextSize(2);
-	M5.Lcd.setCursor(0, 25);
-	M5.Lcd.println("Status: ");
+	buttons();
 }
 
 // Function
@@ -207,12 +246,13 @@ void setupController()
 	// Wifi.
 	Keyboard keyboard;
 	char *ssid = getWifiSSID();
-	char *psw = keyboard.start();
+	// char *psw = keyboard.start();
+	char *psw = "5h0cpt1iug";
 	connectToWifi(ssid, psw);
 	delay(1000);
 	M5.Lcd.clear();
-	char *storage = getStorage();
-	char *controller = keyboard.start();
+	// char *storage = getStorage();
+	// char *controller = keyboard.start();
 }
 
 void connectMQTT()
