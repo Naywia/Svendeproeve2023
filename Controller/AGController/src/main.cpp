@@ -23,6 +23,7 @@ char *getStorage();
 void unlockDoor();
 void setLEDStrip(int colour, int start = 0, int end = 10);
 void setupController();
+void sendMQTT(char *topic, char *message);
 void connectMQTT();
 
 // Make clients.
@@ -42,14 +43,18 @@ char *mqtt_server;
 char *mqtt_username;
 char *mqtt_psw;
 char *mqtt_topic;
-
 #define ANN_BUFFER_SIZE (17)
 #define ID_BUFFER_SIZE (4)
+#define MSG_BUFFER_SIZE (60)
+char msg[MSG_BUFFER_SIZE];
 char announcement[ANN_BUFFER_SIZE];
 char client_ID[ID_BUFFER_SIZE];
-bool doorUnlocked = false;
+char *storage;
+char *controller;
 int controller_ID = 1;
 
+bool doorUnlocked = false;
+#define REQ_BUFFER_SIZE (16)
 char *sensing;
 
 void setup()
@@ -61,14 +66,15 @@ void setup()
 	FastLED.setBrightness(40);
 
 	setupController();
+	client.setServer(mqtt_server, 1883);
+	// Connect to MQTT client
+    connectMQTT();
 
 	// M5.Lcd.setTextSize(2);
 	// M5.Lcd.setCursor(0, 25);
 	// M5.Lcd.println("Status: ");
 	buttons();
 	pinMode(36, INPUT);
-	// Task 1
-	//xTaskCreatePinnedToCore(alarm, "alarm", 4096, NULL, 2, NULL, 0);
 }
 
 void loop()
@@ -96,14 +102,15 @@ void loop()
 	M5.update();
 }
 
-void buttons() {
+void buttons()
+{
 	// Setup
-        M5.Lcd.drawRect(0, 208, 106, 32, BLUE);
-        M5.Lcd.drawRect(106, 208, 107, 32, BLUE);
-        M5.Lcd.drawRect(213, 208, 106, 32, BLUE);
-        M5.Lcd.drawString("Se Status", 30, 215, 2); // Default first num 80
-        M5.Lcd.drawString("Laas doer op", 123, 215, 2);  // Default first num 80
-        M5.Lcd.drawString("Sluk alarm", 230, 215, 2); // Default first num 80
+	M5.Lcd.drawRect(0, 208, 106, 32, BLUE);
+	M5.Lcd.drawRect(106, 208, 107, 32, BLUE);
+	M5.Lcd.drawRect(213, 208, 106, 32, BLUE);
+	M5.Lcd.drawString("Se Status", 30, 215, 2);		// Default first num 80
+	M5.Lcd.drawString("Laas doer op", 123, 215, 2); // Default first num 80
+	M5.Lcd.drawString("Sluk alarm", 230, 215, 2);	// Default first num 80
 }
 
 void motionSensor()
@@ -117,6 +124,8 @@ void motionSensor()
 		// M5.Lcd.print("Sensing");
 		sensing = "Sensing";
 		alarmOn = true;
+		snprintf(msg, MSG_BUFFER_SIZE, "{\"controller_ID\": %d, \"incident\": \"Movement detected in %s\", \"incidentDate\": %s, \"logTypeID\": %d}", controller_ID, storage, "25-04-2023", 1);
+		client.publish("security", msg);
 	}
 	else
 	{
@@ -129,7 +138,8 @@ void motionSensor()
 	alarm();
 }
 
-void check() {
+void check()
+{
 	if (M5.BtnA.wasPressed())
 	{
 		M5.Lcd.fillRect(90, 25, 180, 50, BLACK);
@@ -143,7 +153,6 @@ void check() {
 	{
 		M5.Lcd.clear();
 		unlockDoor();
-		doorUnlocked = true;
 	}
 
 	if (M5.BtnC.wasPressed() && alarmOn)
@@ -221,12 +230,39 @@ void unlockDoor()
 	char *doorCode = numpad.start();
 	String accessToken = httpLogin();
 
-	// http.begin("http://192.168.1.100:8000/unlockDoor");
-	// http.addHeader("Authorization", accessToken);
+	http.begin("http://192.168.1.100:8000/unlockDoor");
+	http.addHeader("Authorization", accessToken);
 
-	// http.addHeader("Content-Type", "application/json");
-	// int responseCode = http.POST("username=controller&password=contr0llerPassw0rd");
-	// http.end();
+	http.addHeader("Content-Type", "application/json");
+	char *string = "\"doorCode\":";
+	char request[REQ_BUFFER_SIZE];
+	int i;
+	for (i = 0; i < strlen(string); i++)
+	{
+		request[i] = string[i];
+	}
+	for (int j = 0; j < strlen(doorCode); j++)
+	{
+		request[i] = doorCode[j];
+		i++;
+	}
+
+	int responseCode = http.POST(request);
+	http.end();
+
+	if (responseCode == 200)
+	{
+		doorUnlocked = true;
+		setLEDStrip(0x00FF00);
+		delay(500);
+		setLEDStrip(0x0);
+	}
+	else
+	{
+		setLEDStrip(0xFF0000);
+		delay(500);
+		setLEDStrip(0x0);
+	}
 
 	buttons();
 }
@@ -251,8 +287,8 @@ void setupController()
 	connectToWifi(ssid, psw);
 	delay(1000);
 	M5.Lcd.clear();
-	// char *storage = getStorage();
-	// char *controller = keyboard.start();
+	// storage = getStorage();
+	// controller = keyboard.start();
 }
 
 void connectMQTT()
@@ -264,13 +300,13 @@ void connectMQTT()
 		M5.lcd.setTextSize(1); // Set font-size to 1
 		M5.Lcd.println("Forsoeger MQTT forbindelse...");
 		// Attempt to connect.
-		if (client.connect(client_ID, "client", "pass"))
+		if (client.connect(client_ID, "user", "P@ssw0rd!"))
 		{
 			M5.Lcd.printf("Succes\n");
 			// Once connected, publish an announcement to the topic.
-			snprintf(announcement, ANN_BUFFER_SIZE, "Controller %d connected", controller_ID); // Format to the specified string and store it in a variable.
+			// snprintf(announcement, ANN_BUFFER_SIZE, "{\"controller\": %s, \"storage\": \"%i\"}", controller, storage); // Format to the specified string and store it in a variable.
 
-			client.publish(mqtt_topic, announcement);
+			// client.publish("new_controller", announcement);
 			M5.lcd.setTextSize(2); // Change font-size back to 2
 		}
 		else
