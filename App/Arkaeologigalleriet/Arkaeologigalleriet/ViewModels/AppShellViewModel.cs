@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 
 namespace Arkaeologigalleriet.ViewModels
 {
-    public partial class AppShellViewModel : INotifyPropertyChanged
+    public partial class AppShellViewModel : BaseViewModel
     {
         int _empId;
         HttpClient _client;
@@ -99,17 +99,7 @@ namespace Arkaeologigalleriet.ViewModels
             set
             {
                 _employeeModel = value;
-                NotifyPropertyChanged(nameof(EmployeeModel));
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                OnPropertyChanged(nameof(EmployeeModel));
             }
         }
     }

@@ -16,8 +16,8 @@ namespace Arkaeologigalleriet.ViewModels
 
         
         HttpClient _client;
-        //string _url = "http://192.168.1.100:8000/";
-        string _url = "http://164.68.113.72:8000/";
+        string _url = "http://192.168.1.100:8000/";
+        //string _url = "http://164.68.113.72:8000/";
 
         [ObservableProperty]
         Artefact _artifactModel;
@@ -25,11 +25,7 @@ namespace Arkaeologigalleriet.ViewModels
         [ObservableProperty]
         int _artifactID;
 
-        [ObservableProperty]
-        string _name;
-
-        [ObservableProperty]
-        string _dec;
+        
 
         CancellationTokenSource _cts;
 
@@ -62,11 +58,12 @@ namespace Arkaeologigalleriet.ViewModels
                     {
 
                         var jsonModel = JsonConvert.DeserializeObject<ArtifactInformationModel>(payload);
-                        foreach (var item in jsonModel.Artefact)
-                        {
-                            Name = item.Name;
-                            Dec = item.Description;
-                        }
+                        ArtifactModel = jsonModel.Artefact.FirstOrDefault();
+                        //foreach (var item in jsonModel.Artefact)
+                        //{
+                        //    Name = item.Name;
+                        //    Dec = item.Description;
+                        //}
 
                     }
                     catch (Exception ex)

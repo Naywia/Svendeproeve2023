@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 namespace Arkaeologigalleriet.ViewModels
 {
     [QueryProperty(nameof(EmployeeModel), nameof(EmployeeModel))]
-    public partial class EmployeeViewModel : INotifyPropertyChanged
+    public partial class EmployeeViewModel : BaseViewModel
     {
 
         ApiServices _apiServices;
@@ -51,11 +51,6 @@ namespace Arkaeologigalleriet.ViewModels
             await Shell.Current.GoToAsync($"{nameof(ChangePasswordView)}?UserID={EmployeeModel.ID}");
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        
     }
 }

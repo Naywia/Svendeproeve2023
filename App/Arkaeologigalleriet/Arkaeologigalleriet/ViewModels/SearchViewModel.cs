@@ -11,13 +11,13 @@ using System.Runtime.CompilerServices;
 namespace Arkaeologigalleriet.ViewModels
 {
     
-    public partial class SearchViewModel : INotifyPropertyChanged
+    public partial class SearchViewModel : BaseViewModel
     {
         #region Propyties
 
         HttpClient _client;
-        //string _url = "http://192.168.1.100:8000/";
-        string _url = "http://164.68.113.72:8000/";
+        string _url = "http://192.168.1.100:8000/";
+        //string _url = "http://164.68.113.72:8000/";
 
         
 
@@ -101,12 +101,7 @@ namespace Arkaeologigalleriet.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        
 
         [RelayCommand]
         public async void Tapped(object item)

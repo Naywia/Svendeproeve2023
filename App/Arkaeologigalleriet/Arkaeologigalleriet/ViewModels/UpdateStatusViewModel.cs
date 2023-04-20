@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 namespace Arkaeologigalleriet.ViewModels
 {
     [QueryProperty(nameof(ArtifactID), nameof(ArtifactID))]
-    public partial class UpdateStatusViewModel : INotifyPropertyChanged
+    public partial class UpdateStatusViewModel : BaseViewModel
     {
 
         ApiServices _apiServices;
@@ -182,11 +182,6 @@ namespace Arkaeologigalleriet.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        
     }
 }

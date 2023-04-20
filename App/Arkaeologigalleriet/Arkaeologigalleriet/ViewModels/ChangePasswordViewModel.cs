@@ -1,4 +1,5 @@
-﻿using Arkaeologigalleriet.Services;
+﻿using Arkaeologigalleriet.Models;
+using Arkaeologigalleriet.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 namespace Arkaeologigalleriet.ViewModels
 {
     [QueryProperty(nameof(UserID), nameof(UserID))]
-    public partial class ChangePasswordViewModel : INotifyPropertyChanged
+    public partial class ChangePasswordViewModel : BaseViewModel
     {
 
         #region Propertys
@@ -114,10 +115,6 @@ namespace Arkaeologigalleriet.ViewModels
         {
             await Shell.Current.GoToAsync("..");
         }
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        
     }
 }
