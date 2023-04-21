@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Arkaeologigalleriet.Views.ScanQRView"
+             xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
+             xmlns:viewMOdel="clr-namespace:Arkaeologigalleriet.ViewModels"
+             x:DataType="viewMOdel:ScanQRViewModel"
+             Title="Scan QR">
+    <VerticalStackLayout VerticalOptions="Center" >
+        <!--<BoxView Color="CornflowerBlue"
+                 CornerRadius="10"
+                 WidthRequest="350"
+                 HeightRequest="350"
+                 VerticalOptions="Center"
+                 HorizontalOptions="Center" 
+                 Margin="10"/>-->
+
+        <zxing:CameraBarcodeReaderView 
+            IsDetecting="True"
+            WidthRequest="350"
+            HeightRequest="350"
+            VerticalOptions="Center"
+            HorizontalOptions="Center" 
+            Margin="0,10,0,100"
+            BarcodesDetected="TestQr" 
+            x:Name="barcodeReader"            
+            />
+
+
+        <Button Text="Scan" Margin="10" WidthRequest="250" Clicked="AtivateScanBtn"/>
+        <Button Text="Annuller" Margin="10" WidthRequest="250"/>
+    </VerticalStackLayout>
+</ContentPage>

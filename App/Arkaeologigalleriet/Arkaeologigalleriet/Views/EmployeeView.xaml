@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Arkaeologigalleriet.Views.EmployeeView"
+             Title="Profil"
+             xmlns:viemodel="clr-namespace:Arkaeologigalleriet.ViewModels"
+             x:DataType="viemodel:EmployeeViewModel">
+    
+    <VerticalStackLayout Spacing="10">
+        <HorizontalStackLayout Spacing="0">            
+            <Label FontSize="Large"
+               FontAttributes="Bold" Margin="10">
+                <Label.Text>
+                    <MultiBinding StringFormat="{}{0} {1}">
+                        <Binding Path="EmployeeModel.FirstName"/>
+                        <Binding Path="EmployeeModel.LastName"/>
+                    </MultiBinding>
+                </Label.Text>
+            </Label>
+        </HorizontalStackLayout>
+        
+        
+        <HorizontalStackLayout HeightRequest="50" Spacing="10">
+            <Image Source="abstract_user_flat_4.svg" Margin="10,0,10,0"/>
+            <Label Text="Skift billede" FontSize="Large" VerticalTextAlignment="Center" Margin="10"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Spacing="10">
+            <ImageButton Source="icons8_password_reset_50.png" Margin="10,0,10,0" Command="{Binding NaviToChangePasswordCommand}"/>
+            <Label Text="Skift kodeord" FontSize="Large" VerticalTextAlignment="Center" Margin="10"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Spacing="10">
+            <Image Source="icons8_phone_48.png" Margin="10,0,10,0"/>
+            <Border WidthRequest="250"
+                    StrokeShape="RoundRectangle 2,2,2,2"
+                    BackgroundColor="Transparent"
+                    StrokeThickness="1">
+                <Entry Text="{Binding EmployeeModel.PhoneNumber, Mode=TwoWay}"></Entry>
+            </Border>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Spacing="10">
+            <Image Source="icons8_home_32.png" Margin="17,0,10,0"/>
+            <Border WidthRequest="250" Margin="9,0,0,0"
+                    StrokeShape="RoundRectangle 2,2,2,2"
+                    BackgroundColor="Transparent"
+                    StrokeThickness="1">
+                <VerticalStackLayout>
+                    <Entry Text="{Binding EmployeeModel.Address, Mode=TwoWay}"></Entry>
+                    <Entry Text="{Binding EmployeeModel.City, Mode=TwoWay}"></Entry>
+                    <Entry Text="{Binding EmployeeModel.Postal, Mode=TwoWay}"></Entry>
+                </VerticalStackLayout>
+                
+            </Border>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Spacing="25" HorizontalOptions="Center" Margin="0,25,0,0">
+            <Button Text="Gem" WidthRequest="150" Command="{Binding UpdateinfoCommand}"/>
+            <Button Text="Annuller" WidthRequest="150"/>
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

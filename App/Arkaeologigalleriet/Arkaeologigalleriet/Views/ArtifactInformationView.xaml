@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Arkaeologigalleriet.Views.ArtifactInformationView"
+             xmlns:viewModel="clr-namespace:Arkaeologigalleriet.ViewModels"
+             x:DataType="viewModel:ArtifactInformationViewModel"
+             Title="Artefakt infomation">
+    <VerticalStackLayout Spacing="10">
+        <BoxView Color="CornflowerBlue"
+                 CornerRadius="10"
+                 WidthRequest="20"
+                 HeightRequest="20"
+                 HorizontalOptions="End" 
+                 Margin="10"/>
+
+        <BoxView Color="CornflowerBlue"
+                 CornerRadius="10"
+                 WidthRequest="350"
+                 HeightRequest="200"
+                 HorizontalOptions="Center" 
+                 Margin="10"/>
+
+
+        <Frame BorderColor="Gray"
+                CornerRadius="5"
+                Padding="8">
+            <StackLayout>
+                <Label Text="{Binding ArtifactModel.Name}"
+                    FontSize="14"
+                    FontAttributes="Bold" TextColor="Black"/>
+                <BoxView Color="Gray"
+                    HeightRequest="2"
+                    HorizontalOptions="Fill" />
+                <ScrollView>
+                    <Label Text="{Binding ArtifactModel.Description}" TextColor="Black"/>
+                </ScrollView>
+            </StackLayout>
+        </Frame>
+        <Button Command="{Binding SpeakNowCommand}" Text="Få læst op"/>
+        <Button Command="{Binding NavigateToUpdateCommand}" Text="Update"/>
+
+    </VerticalStackLayout>
+</ContentPage>
