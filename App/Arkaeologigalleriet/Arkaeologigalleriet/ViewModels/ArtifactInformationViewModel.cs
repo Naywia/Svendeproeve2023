@@ -58,12 +58,7 @@ namespace Arkaeologigalleriet.ViewModels
                     {
 
                         var jsonModel = JsonConvert.DeserializeObject<ArtifactInformationModel>(payload);
-                        ArtifactModel = jsonModel.Artefact.FirstOrDefault();
-                        //foreach (var item in jsonModel.Artefact)
-                        //{
-                        //    Name = item.Name;
-                        //    Dec = item.Description;
-                        //}
+                        ArtifactModel = jsonModel.Artefact.FirstOrDefault();                        
 
                     }
                     catch (Exception ex)
