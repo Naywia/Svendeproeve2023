@@ -81,6 +81,7 @@ void loop()
 {
 	// put your main code here, to run repeatedly:
 	check();
+	client.loop();
 
 	if (!doorUnlocked)
 	{
