@@ -16,8 +16,8 @@ namespace Arkaeologigalleriet.ViewModels
 
         
         HttpClient _client;
-        string _url = "http://192.168.1.100:8000/";
-        //string _url = "http://164.68.113.72:8000/";
+        //string _url = "http://192.168.1.100:8000/";
+        string _url = "http://164.68.113.72:8000/";
 
         [ObservableProperty]
         Artefact _artifactModel;
@@ -95,11 +95,11 @@ namespace Arkaeologigalleriet.ViewModels
 
             SpeechOptions options = new SpeechOptions()
             {
-                Pitch = 1.5f,   // 0.0 - 2.0
+                Pitch = 1.0f,   // 0.0 - 2.0
                 Volume = 0.75f, // 0.0 - 1.0
             };
 
-            await TextToSpeech.Default.SpeakAsync(Dec, options, cancelToken: _cts.Token);
+            await TextToSpeech.Default.SpeakAsync(ArtifactModel.Description, options, cancelToken: _cts.Token);
 
            
         }
