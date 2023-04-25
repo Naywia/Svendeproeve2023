@@ -59,6 +59,7 @@
 	  <None Remove="Resources\Images\icons8_phone_48.png" />
 	  <None Remove="Resources\Images\out.png" />
 	  <None Remove="Resources\Images\search.png" />
+	  <None Remove="Resources\Images\snart.png" />
 	  <None Remove="Resources\Images\thenounproject.png" />
 	</ItemGroup>
 
