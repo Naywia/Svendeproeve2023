@@ -13,12 +13,14 @@
                  HorizontalOptions="End" 
                  Margin="10"/>
 
-        <BoxView Color="CornflowerBlue"
+        <Frame 
                  CornerRadius="10"
                  WidthRequest="350"
                  HeightRequest="200"
                  HorizontalOptions="Center" 
-                 Margin="10"/>
+                 Margin="10">
+            <Image Source="{Binding ImageSource}" MaximumHeightRequest="200" MaximumWidthRequest="350"/>
+        </Frame>
 
 
         <Frame BorderColor="Gray"
