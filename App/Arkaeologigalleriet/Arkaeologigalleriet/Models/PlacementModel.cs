@@ -26,7 +26,7 @@ namespace Arkaeologigalleriet.Models
         {
             get
             {
-                return $"Shelf: {Shelf}, Row: {Row}";
+                return $"Hyde: {Shelf}, Række: {Row}";
             }
         }
     }

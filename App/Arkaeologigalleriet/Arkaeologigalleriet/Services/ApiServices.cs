@@ -94,6 +94,43 @@ namespace Arkaeologigalleriet.Services
             return null;
         }
 
+        public async Task<List<PlacementModel>> GetSingelPlacementModelsAsync(int id)
+        {
+            List<PlacementModel> placementModels = new List<PlacementModel>();
+
+            try
+            {
+                using HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, _url + "placement");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await SecureStorage.Default.GetAsync("JWT"));
+                HttpResponseMessage response = await _client.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    string payload = await response.Content.ReadAsStringAsync();
+                    try
+                    {
+                        var jsonModel = JsonConvert.DeserializeObject<PlacementModels>(payload);
+                        foreach (var item in jsonModel.Placements)
+                        {
+                            placementModels.Add(item);
+                        }
+                        placementModels = placementModels.Where(s=> s.ID == id).ToList();
+                    }
+                    catch (Exception ex)
+                    {
+                        await Console.Out.WriteLineAsync(ex.Message);
+
+                    }
+                }
+                return placementModels;
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+
+            }
+            return null;
+        }
+
         public async Task<List<Artefact>> GetArtefactAsync(int Id)
         {
             List<Artefact> artefact = new();

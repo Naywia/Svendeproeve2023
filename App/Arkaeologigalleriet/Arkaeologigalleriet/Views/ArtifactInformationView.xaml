@@ -35,10 +35,13 @@
                     HorizontalOptions="Fill" />
                 <ScrollView>
                     <Label Text="{Binding ArtifactModel.Description}" TextColor="Black"/>
+                    
                 </ScrollView>
+                <Label Text="{Binding PlacmentString}" TextColor="Black"/>
             </StackLayout>
         </Frame>
-        <Button Command="{Binding SpeakNowCommand}" Text="Få læst op"/>
+        <Button Command="{Binding SpeakNowCommand}" Text="Få læst op" IsVisible="{Binding TTSknapText}"/>
+        <Button Command="{Binding CancelSpeechCommand}" Text="Stop op læsning" IsVisible="{Binding TTSStop}"/>
         <Button Command="{Binding NavigateToUpdateCommand}" Text="Update"/>
 
     </VerticalStackLayout>

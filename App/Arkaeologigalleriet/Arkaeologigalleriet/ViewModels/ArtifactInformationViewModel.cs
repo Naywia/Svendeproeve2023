@@ -1,4 +1,5 @@
 ﻿using Arkaeologigalleriet.Models;
+using Arkaeologigalleriet.Services;
 using Arkaeologigalleriet.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -15,7 +16,8 @@ namespace Arkaeologigalleriet.ViewModels
     {
         #region Propyties
 
-        
+        ApiServices _apiServices;
+
         HttpClient _client;
         //string _url = "http://192.168.1.100:8000/";
         string _url = "http://164.68.113.72:8000/";
@@ -29,6 +31,14 @@ namespace Arkaeologigalleriet.ViewModels
         [ObservableProperty]
         ImageSource _imageSource;
 
+        [ObservableProperty]
+        string _placmentString;
+
+        [ObservableProperty]
+        bool _TTSknapText = true;
+        [ObservableProperty]
+        bool _TTSStop = false;
+
         CancellationTokenSource _cts;
 
     
@@ -37,6 +47,7 @@ namespace Arkaeologigalleriet.ViewModels
 
         public ArtifactInformationViewModel()
         {
+            _apiServices = new();
         }
 
 
@@ -61,6 +72,8 @@ namespace Arkaeologigalleriet.ViewModels
 
                         var jsonModel = JsonConvert.DeserializeObject<ArtifactInformationModel>(payload);
                         ArtifactModel = jsonModel.Artefact.FirstOrDefault();
+                        var placment = await _apiServices.GetSingelPlacementModelsAsync(ArtifactModel.PlacementID);
+                        PlacmentString = placment.FirstOrDefault().DisplayText;
                         
                         if (!string.IsNullOrEmpty(ArtifactModel.ArtefactImage))
                         {
@@ -99,6 +112,8 @@ namespace Arkaeologigalleriet.ViewModels
         {
             _cts = new CancellationTokenSource();
 
+            TTSknapText = false;
+            TTSStop = true;
             IEnumerable<Locale> locales = await TextToSpeech.GetLocalesAsync();
 
             foreach (Locale locale in locales)
@@ -115,16 +130,19 @@ namespace Arkaeologigalleriet.ViewModels
 
             await TextToSpeech.Default.SpeakAsync(ArtifactModel.Description, options, cancelToken: _cts.Token);
 
-           
+            TTSknapText = true;
+            TTSStop = false;
         }
 
-        
+        [RelayCommand]
         public void CancelSpeech()
         {
             if (_cts?.IsCancellationRequested ?? true)
                 return;
 
             _cts.Cancel();
+            TTSknapText = true;
+            TTSStop = false;
         }
 
         [RelayCommand]
