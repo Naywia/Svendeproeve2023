@@ -95,7 +95,7 @@ class Connection:
                 VALUES ('{logType}')"""
         self.execute(sql, commit=True)
 
-    def insertLog(self, incident, incidentDate, logTypeID):
+    def insertLog(self, incident, incidentDate, logTypeID, controllerID):
         """ Insert a log incident into the database. """
         sql = f"""INSERT INTO "Log" ("incident", "incidentDate", "logTypeID", "controllerID")
                 VALUES ('{incident}', '{incidentDate}', {logTypeID}, {controllerID})"""

@@ -1,17 +1,15 @@
 #include <M5Stack.h>
 #include <Arduino.h>
 #include <WiFi.h>
-#include <FastLED.h>
 #include "keyboard.h"
 #include "selector.h"
+#include "leds.h"
 
 class WiFiConnector
 {
 public:
-// LED
-#define NUM_LEDS 10
-#define DATA_PIN 15
-    CRGB leds[NUM_LEDS];
+    // LED
+    Leds led;
 
     // Class instances
     WiFiClient espClient;
@@ -30,9 +28,7 @@ public:
     void scanForWiFi()
     {
         // Setup
-        FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS); // GRB ordering is assumed
-        FastLED.setBrightness(40);
-        setLEDStrip(0x0);
+        led.setLEDStrip(0x0);
         M5.Lcd.clear(); // Clear the screen.
         M5.Lcd.setCursor(0, 0);
 
@@ -84,7 +80,7 @@ public:
                 {
                     M5.Speaker.tone(661, 100);
                     M5.Lcd.clear();
-                    connectToWiFi();
+                    connectToWiFi(chosenNetwork);
                     readyToConnect = false;
                 }
             }
@@ -93,13 +89,15 @@ public:
         }
     }
 
-    void connectToWiFi()
+    void connectToWiFi(char *chosenNetwork)
     {
         Keyboard keyboard;
-        password = keyboard.start();
+        char *blank = keyboard.start();
+        led.initLED();
+        password = "5h0cpt1iug";
         delay(10);
         M5.Lcd.setCursor(0, 0);
-        M5.Lcd.printf("Connecting to %s", chosenNetwork);
+        M5.Lcd.printf("Connecting to %s\n", chosenNetwork);
         WiFi.mode(WIFI_STA);                 // Set the mode to WiFi station mode.
         WiFi.begin(chosenNetwork, password); // Start Wifi connection.
 
@@ -109,16 +107,14 @@ public:
         {
             if (i > 4)
             {
-                setLEDStrip(0x0);
+                led.setLEDStrip(0x0);
                 i = 0;
             }
             else
             {
-                leds[i] = 0x0000FF;
-                leds[i + 5] = 0x0000FF;
+                led.setLEDStrip(0x0000FF, i, i + 1);
+                led.setLEDStrip(0x0000FF, i + 5, i + 6);
                 i++;
-                // Show color
-                FastLED.show();
             }
 
             M5.Lcd.print(".");
@@ -127,8 +123,8 @@ public:
 
             if (wifiWaitTime >= 20)
             {
-                setLEDStrip(0xFF0000); // Set LEDs to red
-                delay(1000);           // for 1 second
+                led.setLEDStrip(0xFF0000); // Set LEDs to red
+                delay(1000);               // for 1 second
                 break;
             }
         }
@@ -137,24 +133,17 @@ public:
         M5.Lcd.setCursor(0, 0);
         if (wifiWaitTime >= 15)
         {
-            M5.Lcd.printf("\nFailed to connect. Press Btn.A to try again\n");
-            setLEDStrip(0x0); // Turn LEDs off
+            M5.Lcd.printf("\nFailed to connect.\n");
+            led.setLEDStrip(0xFF0000); // Set LEDs to green
+            delay(1000);               // for 1 second
+            led.setLEDStrip(0x0);      // Turn LEDs off
         }
         else
         {
             M5.Lcd.printf("\nSuccess\n");
-            setLEDStrip(0x00FF00); // Set LEDs to green
-            delay(1000);           // for 1 second
-            setLEDStrip(0x0);      // Turn LEDs off
+            led.setLEDStrip(0x00FF00); // Set LEDs to green
+            delay(1000);               // for 1 second
+            led.setLEDStrip(0x0);      // Turn LEDs off
         }
-    }
-
-    void setLEDStrip(int colour)
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            leds[i] = colour;
-        }
-        FastLED.show();
     }
 };

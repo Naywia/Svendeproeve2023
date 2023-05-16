@@ -38,7 +38,7 @@ class Mosquitto:
         if "{" in payload:
             data = json.loads(payload)
 
-            #print(payload + " received on topic[" + msg.topic + "]")
+            print(payload + " received on topic[" + msg.topic + "]")
             if msg.topic == "setup":
                 pass
             elif msg.topic == "security":
@@ -582,4 +582,5 @@ class Archaeologygallery:
         Conn().deleteLog(logID)
         return {"message": "Deleted log"}
 
+Mosquitto().client.loop_start()
 uvicorn.run(Archaeologygallery().api, host='0.0.0.0', port=8000)
