@@ -1,0 +1,7 @@
+python -m pip install fastapi
+python -m pip install uvicorn
+python -m pip install python-jose
+python -m pip install passlib
+python -m pip install bcrypt
+python -m pip install psycopg2
+python -m pip install python-multipart
