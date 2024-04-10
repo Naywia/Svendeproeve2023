@@ -16,14 +16,16 @@ The system is designed to replace the previous manual and vulnerable administrat
 This is a school project and therefore should not be installed
 
 ## Technologies
-Language:  
+#### Language:  
 * **App** C#  
 * **API** Python  
 * **M5Stack Core Controller** C++  
-Framework:  
+
+#### Framework:  
 * **App** MAUI  
 * **API** FastAPI  
-Database:  
+
+#### Database:  
 PostgreSQL
 
 ## Developers
