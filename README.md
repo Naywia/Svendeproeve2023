@@ -17,13 +17,13 @@ This is a school project and therefore should not be installed
 
 ## Technologies
 #### Language:  
-* **App** C#  
-* **API** Python  
-* **M5Stack Core Controller** C++  
+* **App** - C#  
+* **API** - Python  
+* **M5Stack Core Controller** - C++  
 
 #### Framework:  
-* **App** MAUI  
-* **API** FastAPI  
+* **App** - MAUI  
+* **API** - FastAPI  
 
 #### Database:  
 PostgreSQL
