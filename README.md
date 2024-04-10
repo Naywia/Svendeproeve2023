@@ -13,7 +13,7 @@ The system is designed to replace the previous manual and vulnerable administrat
 * Inventory management: Easy access to information about artifacts, including location, condition, and history.  
 
 ## Installation
-This is a school project and therefore should not be installed
+This project is not intended for installation as it is a school project.
 
 ## Technologies
 #### Language:  
