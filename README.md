@@ -29,5 +29,5 @@ This project is not intended for installation as it is a school project.
 PostgreSQL
 
 ## Developers
-Casper Wind  
-Maya Wettendorff
+CasperWind  
+Naywia
